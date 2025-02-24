@@ -1,0 +1,31 @@
+{
+  "name": "berostock-api",
+  "version": "1.0.0",
+  "description": "Database Api for inventory records",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "electronics",
+    "hotel",
+    "services",
+    "bakery",
+    "equipments"
+  ],
+  "author": "Jonah Attah",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.10.1",
+    "mongoose-paginate-v2": "^1.9.0",
+    "nodemon": "^3.1.9"
+  }
+}
