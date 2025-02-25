@@ -1,4 +1,7 @@
 const app = require("./app")
+const dotenv = require("dotenv")
+
+dotenv.config()
 require("./dbConnection").connectToMongoDB()
 
 const PORT = process.env.PORT
