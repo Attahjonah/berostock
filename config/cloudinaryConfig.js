@@ -1,11 +1,17 @@
-const cloudinary = require("cloudinary").v2
-require("dotenv").config()
-
-cloudinary.config({
-    cloud_name: process.env.cloud_name,
-    api_key: process.env.api_key,
-    api_secret: process.env.api_secret
-})
+// require("dotenv").config()
+// const cloudinary = require("cloudinary").v2
 
 
-module.exports = cloudinary;
+// cloudinary.config({
+//     CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+//     CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+//     CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET
+// })
+
+// (async function() {
+//     const results = await cloudinary.uploader.upload('../images/Slush Machine.jpg')
+//     console.log(results)
+// })()
+
+
+// module.exports = cloudinary;

@@ -2,7 +2,7 @@ const ProductModel = require("../models/productModel")
 
 // Create Product
 const CreateProduct = async (payload, user) => {
-    const { body } = payload;
+    //const{body}   = payload;
   
     try {
       const product = await ProductModel.create({
@@ -16,7 +16,7 @@ const CreateProduct = async (payload, user) => {
         data: {
           product,
         },
-      };
+      }; 
     } catch (error) {
       if (error.code === 11000) {
         const duplicatedField = Object.keys(error.keyValue)[0];

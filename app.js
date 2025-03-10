@@ -2,7 +2,7 @@ const express = require("express")
 const dotenv = require("dotenv")
 const ProductRoute = require("./routes/productRoute")
 const AuthRoute = require("./routes/authRoute")
-const uploadRoute = require("./routes/uploadRoute")
+
 
 dotenv.config()
 const app = express()
@@ -13,7 +13,7 @@ app.use(express.json())
 // Routes definition
 app.use('/auth', AuthRoute)
 app.use('/product', ProductRoute)
-app.use('/api', uploadRoute);
+
 
 
 app.get('/', (req, res) =>{

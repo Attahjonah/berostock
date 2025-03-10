@@ -3,13 +3,15 @@ const Joi = require("joi")
 const validatingProductCreated = async function (req, res, next){
     const requestBody = req.body;
     const schema = Joi.object({
-        title: Joi.string().required().min(5).max(100),
+        name: Joi.string().required().min(5).max(100),
+        modelNumber: Joi.string().required().min(4).max(15),
+        picture: Joi.string(),
+        stock: Joi.number().required(),
+        status: Joi.string().required(),
         description: Joi.string().required().min(10).max(250),
-        body: Joi.string().required().min(50),
-        author: Joi.string().required(),
-        tags: Joi.array()
-                .items(Joi.string().min(2).max(30))
-                .max(10)
+        price: Joi.string(),
+        category: Joi.string().required(),
+        supplier: Joi.string().required()
     })
 
     const valid = await schema.validate(requestBody)
