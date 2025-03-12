@@ -34,7 +34,7 @@ const ProductSchema = new mongoose.Schema({
     },
 
     price: { 
-        type: String
+        type: Number
     },
 
     category: { 
@@ -50,11 +50,12 @@ const ProductSchema = new mongoose.Schema({
         
     },
 
-    createdBy : { 
+    createdBy : {  
         type: mongoose.Schema.Types.ObjectId, 
         required: true,
         ref: 'user' 
     },
+  
 
 
     createdAt: { 

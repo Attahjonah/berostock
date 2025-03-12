@@ -3,12 +3,13 @@ const ProductModel = require("../models/productModel")
 // Create Product
 const CreateProduct = async (payload, user) => {
     //const{body}   = payload;
-  
     try {
       const product = await ProductModel.create({
         ...payload,
-        user_id: user._id,
+        createdBy: user._idcl
       });
+      console.log(product)
+    
       return {
         code: 201,
         success: true,
@@ -27,14 +28,16 @@ const CreateProduct = async (payload, user) => {
           data: { message: `${duplicatedField} already exist` },
         };
       }
+      console.log(error)
+      return {
+        code: 404,
+        success: false,
+        message: "Product not found",
+        data: null,
+      };
     }
-  
-    return {
-      code: 404,
-      success: false,
-      message: "Product not found",
-      data: null,
-    };
+    
+    
   };
   // Get Product by ID
     const GetProduct = async (productId) => {

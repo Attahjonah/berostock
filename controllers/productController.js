@@ -3,12 +3,14 @@ const ProductService = require("../services/productService")
 const CreateProduct = async (req, res) => {
     const payload = req.body;
     const user = req.user;
-
+    
+    
     const serviceResponse = await ProductService.CreateProduct(
         payload, 
         user
+    
     )
-
+    
     return res.status(serviceResponse.code).json(serviceResponse);
 }
 
