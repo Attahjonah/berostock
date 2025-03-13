@@ -6,9 +6,8 @@ const CreateProduct = async (payload, user) => {
     try {
       const product = await ProductModel.create({
         ...payload,
-        createdBy: user._idcl
+        createdBy: user._id
       });
-      console.log(product)
     
       return {
         code: 201,
@@ -66,51 +65,104 @@ const CreateProduct = async (payload, user) => {
   };
   
   // Get all Products
-  const GetAllProduct = async ({
-    user_id,
-    text,
-    page = 1,
-    status,
-    category,
-    supplier,
-    perPage = 10,
-  }) => {
-    const query = {};
+
+  const GetAllProducts = async (req, res) => {
+    try {
+        // Extract query parameters for filtering, searching, and pagination
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const { search, category, supplier } = req.query;
+        
+
+        let query = {};
+
+        // Search by name or modelNumber 
+        if (search) {
+            query.$or = [
+                { name: { $regex: search, $options: "i" } },
+                { modelNumber: { $regex: search, $options: "i" } }
+            ];
+        }
+
+        // Filter by category
+        if (category) {
+            query.category = category;
+        }
+
+        // Filter by supplier
+        if (supplier) {
+            query.supplier = supplier;
+        }
+
+      
+        // Paginate results
+        const options = {
+            page: parseInt(page),
+            limit: parseInt(limit),
+            sort: { createdAt: -1 }, // Sort by latest products
+        };
+
+        const products = await ProductModel.paginate(query, options);
+
+        res.status(200).json({
+            success: true,
+            totalProducts: products.totalDocs,
+            totalPages: products.totalPages,
+            currentPage: products.page,
+            products: products.docs,
+        });
+
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+};
+
+  // const GetAllProducts = async ({
+  //   user_id,
+  //   text,
+  //   page = 1,
+  //   Status,
+  //   category,
+  //   supplier,
+  //   perPage = 10,
+  // }) => {
+  //   const query = {};
   
-    // if (user_id) {
-    //   query.author = user_id;
-    // }
+  //   // if (user_id) {
+  //   //   query.author = user_id;
+  //   // }
   
-    if (text) {
-      query.$or = [
-        { title: { $regex: text, $options: "i" } },
-        { body: { $regex: text, $options: "i" } },
-      ];
-    }
+  //   if (text) {
+  //     query.$or = [
+  //       { title: { $regex: text, $options: "i" } },
+  //       { body: { $regex: text, $options: "i" } },
+  //     ];
+  //   }
   
-    if (status) {
-      query.status = status;
-    }
-    if (category) {
-      query.category = category;
-    }
-    if (supplier) {
-      query.supplier = supplier;
-    }
+  //   if (Status) {
+  //     query.Status = Status;
+  //   }
+  //   if (category) {
+  //     query.category = category;
+  //   }
+  //   if (supplier) {
+  //     query.supplier = supplier;
+  //   }
   
     
   
-    const products = await ProductModel.paginate(query, { page, limit: perPage });
+  //   const products = await ProductModel.paginate(query, { page, limit: perPage });
   
-    return {
-      code: 200,
-      success: true,
-      message: "Product found",
-      data: {
-        products,
-      },
-    };
-  };
+  //   return {
+  //     code: 200,
+  //     success: true,
+  //     message: "Product found",
+  //     data: {
+  //       products,
+  //     },
+  //   };
+  // };
   
   // Update Product
   const UpdateProduct = async (productId, payload, user) => {
@@ -131,7 +183,7 @@ const CreateProduct = async (payload, user) => {
       product.name = payload.name || product.name;
       product.picture = payload.picture || product.picture;
       product.stock = payload.stock || product.stock;
-      product.status = payload.status || product.status;
+      product.Status = payload.Status || product.Status;
       product.description = payload.description || product.description;
       product.price = payload.price || product.price;
       product.category = payload.category || product.category;
@@ -196,7 +248,7 @@ const CreateProduct = async (payload, user) => {
   module.exports = {
     CreateProduct,
     GetProduct,
-    GetAllProduct,
+    GetAllProducts,
     UpdateProduct,
     DeleteProduct,
   };

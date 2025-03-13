@@ -6,7 +6,7 @@ const authMiddleware = require("../middlewares/authMiddleware")
 const route = Router()
 
 route.post('/', authMiddleware.ValidateToken, productMiddleware.validatingProductCreated, productController.CreateProduct)
-route.get('/', productController.GetAllProduct)
+route.get('/', productController.GetAllProducts)
 route.get('/:productId', productController.GetProduct)
 route.put('/:productId', productController.UpdateProduct)
 route.delete('/:productId', productController.DeleteProduct) 

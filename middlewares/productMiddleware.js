@@ -8,9 +8,9 @@ const validatingProductCreated = async(req, res, next)=>{
         modelNumber: Joi.string().required().min(4).max(15),
         picture: Joi.string(),
         stock: Joi.number().required(),
-        status: Joi.string().required(),
+    //    status: Joi.string().required(),
         description: Joi.string().required().min(10).max(250),
-        price: Joi.number(),
+        price: Joi.number().min(0),
         category: Joi.string().required(),
         supplier: Joi.string().required()
     })

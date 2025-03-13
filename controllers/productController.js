@@ -24,15 +24,21 @@ const GetProduct = async (req, res) => {
 
     return res.status(serviceResponse.code).json(serviceResponse);
 }
-const GetAllProduct = async (req, res) => {
 
-    const {user_id, text, page = 1, perPage = 10} = req.query;
-    const serviceResponse = await ProductService.GetAllProduct({
-        user_id, text, page, perPage
+const GetAllProducts = async (req, res) => {
+
+    const serviceResponse = await ProductService.GetAllProducts({
+        search, category, supplier
     }); 
 
     return res.status(serviceResponse.code).json(serviceResponse);
 }
+
+
+module.exports = GetAllProducts;
+
+
+
 
 const UpdateProduct = async (req, res) => {
     const productId = req.params.productId
@@ -61,7 +67,7 @@ const DeleteProduct = async (req, res) => {
 
 module.exports = {
     CreateProduct,
-    GetAllProduct,
+    GetAllProducts,
     GetProduct,
     UpdateProduct,
     DeleteProduct

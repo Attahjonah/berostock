@@ -22,12 +22,12 @@ const ProductSchema = new mongoose.Schema({
         required: true
     },
 
-    status: { 
-        type: String, 
-        required: true, 
-        enum: ["In Stock", "Low Stock", "Out of Stock"],
-        //default: "Out of Stock"
-    },
+    // status: { 
+    //     type: String, 
+    //     required: true, 
+    //     enum: ["In Stock", "Low Stock", "Out of Stock"],
+    //     //default: "Out of Stock"
+    // },
 
     description: { 
         type: String 
@@ -65,6 +65,17 @@ const ProductSchema = new mongoose.Schema({
 
 },  {timestamps: true}
 )
+
+ProductSchema.pre("save", function (next) {
+    if (this.stock === 0) {
+        this.status = "Out of Stock";
+    } else if (this.stock < 3) { 
+        this.status = "Low Stock";
+    } else {
+        this.status = "In Stock";
+    }
+    next();
+});
 
 
 ProductSchema.plugin(mongoosePaginate);
