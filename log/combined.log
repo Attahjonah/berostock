@@ -1,0 +1,188 @@
+[36m[1m2025-05-07 14:12:12 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-07 14:12:47 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-07 14:14:47 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-13 14:26:00 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-13 14:28:47 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-13 14:32:14 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-13 23:01:05 info START: Attempting to log in a user[22m[39m
+[31m[1m2025-05-13 23:01:05 error Error logging in user: Illegal arguments: string, undefined[22m[39m
+[31m[1mStack trace: Error: Illegal arguments: string, undefined[22m[39m
+[31m[1m    at _async (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\bcryptjs\umd\index.js:305:15)[22m[39m
+[31m[1m    at C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\bcryptjs\umd\index.js:335:11[22m[39m
+[31m[1m    at new Promise (<anonymous>)[22m[39m
+[31m[1m    at Object.compare (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\bcryptjs\umd\index.js:334:16)[22m[39m
+[31m[1m    at exports.doHashValidation (C:\Users\ZINOX\Desktop\BeRoStock API\src\utils\authUtils.js:64:27)[22m[39m
+[31m[1m    at login (C:\Users\ZINOX\Desktop\BeRoStock API\src\controllers\authController.js:76:39)[22m[39m
+[31m[1m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[22m[39m
+[36m[1m2025-05-13 23:13:03 info START: Attempting to log in a user[22m[39m
+[31m[1m2025-05-13 23:13:04 error Error logging in user: Illegal arguments: string, undefined[22m[39m
+[31m[1mStack trace: Error: Illegal arguments: string, undefined[22m[39m
+[31m[1m    at _async (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\bcryptjs\umd\index.js:305:15)[22m[39m
+[31m[1m    at C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\bcryptjs\umd\index.js:335:11[22m[39m
+[31m[1m    at new Promise (<anonymous>)[22m[39m
+[31m[1m    at Object.compare (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\bcryptjs\umd\index.js:334:16)[22m[39m
+[31m[1m    at exports.doHashValidation (C:\Users\ZINOX\Desktop\BeRoStock API\src\utils\authUtils.js:64:27)[22m[39m
+[31m[1m    at login (C:\Users\ZINOX\Desktop\BeRoStock API\src\controllers\authController.js:76:39)[22m[39m
+[31m[1m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[22m[39m
+[36m[1m2025-05-13 23:14:03 info START: Attempting to log in a user[22m[39m
+[31m[1m2025-05-13 23:14:03 error Error logging in user: Illegal arguments: string, undefined[22m[39m
+[31m[1mStack trace: Error: Illegal arguments: string, undefined[22m[39m
+[31m[1m    at _async (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\bcryptjs\umd\index.js:305:15)[22m[39m
+[31m[1m    at C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\bcryptjs\umd\index.js:335:11[22m[39m
+[31m[1m    at new Promise (<anonymous>)[22m[39m
+[31m[1m    at Object.compare (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\bcryptjs\umd\index.js:334:16)[22m[39m
+[31m[1m    at exports.doHashValidation (C:\Users\ZINOX\Desktop\BeRoStock API\src\utils\authUtils.js:64:27)[22m[39m
+[31m[1m    at login (C:\Users\ZINOX\Desktop\BeRoStock API\src\controllers\authController.js:76:39)[22m[39m
+[31m[1m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[22m[39m
+[36m[1m2025-05-13 23:18:49 info START: Attempting to log in a user[22m[39m
+[31m[1m2025-05-13 23:18:50 error Error logging in user: payload is required[22m[39m
+[31m[1mStack trace: Error: payload is required[22m[39m
+[31m[1m    at module.exports [as sign] (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\jsonwebtoken\sign.js:141:20)[22m[39m
+[31m[1m    at exports.generateAccessToken (C:\Users\ZINOX\Desktop\BeRoStock API\src\utils\authUtils.js:29:16)[22m[39m
+[31m[1m    at login (C:\Users\ZINOX\Desktop\BeRoStock API\src\controllers\authController.js:82:29)[22m[39m
+[36m[1m2025-05-13 23:20:15 info START: Attempting to log in a user[22m[39m
+[31m[1m2025-05-13 23:20:18 error Error logging in user: payload is required[22m[39m
+[31m[1mStack trace: Error: payload is required[22m[39m
+[31m[1m    at module.exports [as sign] (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\jsonwebtoken\sign.js:141:20)[22m[39m
+[31m[1m    at exports.generateAccessToken (C:\Users\ZINOX\Desktop\BeRoStock API\src\utils\authUtils.js:29:16)[22m[39m
+[31m[1m    at login (C:\Users\ZINOX\Desktop\BeRoStock API\src\controllers\authController.js:82:29)[22m[39m
+[36m[1m2025-05-13 23:24:45 info START: Attempting to log in a user[22m[39m
+[31m[1m2025-05-13 23:24:45 error Error logging in user: Expected "payload" to be a plain object.[22m[39m
+[31m[1mStack trace: Error: Expected "payload" to be a plain object.[22m[39m
+[31m[1m    at validate (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\jsonwebtoken\sign.js:44:11)[22m[39m
+[31m[1m    at validatePayload (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\jsonwebtoken\sign.js:66:10)[22m[39m
+[31m[1m    at module.exports [as sign] (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\jsonwebtoken\sign.js:144:7)[22m[39m
+[31m[1m    at exports.generateAccessToken (C:\Users\ZINOX\Desktop\BeRoStock API\src\utils\authUtils.js:29:16)[22m[39m
+[31m[1m    at login (C:\Users\ZINOX\Desktop\BeRoStock API\src\controllers\authController.js:82:29)[22m[39m
+[36m[1m2025-05-13 23:31:16 info START: Attempting to log in a user[22m[39m
+[31m[1m2025-05-13 23:31:16 error Error logging in user: Expected "payload" to be a plain object.[22m[39m
+[31m[1mStack trace: Error: Expected "payload" to be a plain object.[22m[39m
+[31m[1m    at validate (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\jsonwebtoken\sign.js:44:11)[22m[39m
+[31m[1m    at validatePayload (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\jsonwebtoken\sign.js:66:10)[22m[39m
+[31m[1m    at module.exports [as sign] (C:\Users\ZINOX\Desktop\BeRoStock API\node_modules\jsonwebtoken\sign.js:144:7)[22m[39m
+[31m[1m    at exports.generateAccessToken (C:\Users\ZINOX\Desktop\BeRoStock API\src\utils\authUtils.js:29:16)[22m[39m
+[31m[1m    at login (C:\Users\ZINOX\Desktop\BeRoStock API\src\controllers\authController.js:82:29)[22m[39m
+[31m[1m2025-05-15 00:09:02 error Signup error: sendVerificationEmail is not a function[22m[39m
+[31m[1m2025-05-15 00:35:50 error Error sending verification email: sendVerificationEmail is not a function[22m[39m
+[31m[1m2025-05-15 01:55:42 error Error sending verification email: sendVerificationEmail is not a function[22m[39m
+[31m[1m2025-05-15 02:04:28 error Error sending verification email: sendVerificationEmail is not a function[22m[39m
+[31m[1m2025-05-15 02:08:39 error Error sending verification email: sendVerificationEmail is not a function[22m[39m
+[36m[1m2025-05-15 11:42:10 info Verification email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-15 11:42:10 info New user registered: devsouza93@gmail.com as manager[22m[39m
+[36m[1m2025-05-15 11:51:32 info Verification email sent to attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-15 11:51:32 info New user registered: attahjonah93@gmail.com as staff[22m[39m
+[36m[1m2025-05-15 12:03:56 info Verification email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-15 12:03:56 info New user registered: devsouza93@gmail.com as manager[22m[39m
+[36m[1m2025-05-15 12:06:02 info Verification email sent to attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-15 12:06:02 info New user registered: attahjonah93@gmail.com as staff[22m[39m
+[36m[1m2025-05-15 13:51:15 info START: Attempting to log in a user[22m[39m
+[31m[1m2025-05-15 13:51:15 error Login error: Illegal arguments: string, undefined[22m[39m
+[36m[1m2025-05-15 14:00:57 info START: Attempting to log in a user[22m[39m
+[31m[1m2025-05-15 14:00:57 error Login error: Illegal arguments: string, undefined[22m[39m
+[36m[1m2025-05-15 14:11:21 info START: Attempting to log in a user[22m[39m
+[31m[1m2025-05-15 14:11:21 error Login error: Expected "payload" to be a plain object.[22m[39m
+[36m[1m2025-05-15 14:23:21 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-15 14:23:22 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-15 14:26:00 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-15 14:26:00 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-15 14:39:16 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-15 14:39:17 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-19 17:15:54 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-19 17:15:55 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-19 17:26:13 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-19 17:26:14 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-19 17:33:00 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-19 17:33:00 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-19 17:33:41 info START: Attempting to change password for user_id: undefined[22m[39m
+[36m[1m2025-05-19 17:40:59 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-19 17:41:00 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-19 17:44:26 info START: Attempting to change password for user_id: undefined[22m[39m
+[36m[1m2025-05-20 00:03:28 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-20 00:03:29 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-20 00:11:13 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-20 00:11:14 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-20 00:18:43 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-20 00:18:44 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-20 00:19:15 info START: Attempting to change password for user: undefined[22m[39m
+[36m[1m2025-05-20 00:20:14 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-20 00:20:14 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-20 00:37:37 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-20 00:37:38 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-20 11:30:52 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-20 11:30:52 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-20 12:00:28 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-20 12:00:28 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-20 12:02:17 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-20 12:02:17 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-21 22:26:25 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-21 22:26:27 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-21 22:55:05 info START: Attempting to log in a user[22m[39m
+[31m[1m2025-05-21 22:55:05 error Login error: doHashValidation is not a function[22m[39m
+[36m[1m2025-05-21 23:05:19 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-21 23:05:20 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-21 23:06:53 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-21 23:06:54 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-21 23:07:53 info START: Attempting to change password for user: 6825ca95e21cd006486f253b[22m[39m
+[36m[1m2025-05-21 23:07:53 info END: Password changed successfully for user: 6825ca95e21cd006486f253b[22m[39m
+[36m[1m2025-05-21 23:08:48 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-21 23:08:59 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-21 23:09:00 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-21 23:14:26 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-21 23:14:36 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-21 23:14:36 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-21 23:23:18 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-21 23:23:18 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-21 23:24:38 info START: Attempting to change password for user: 6825ca95e21cd006486f253b[22m[39m
+[36m[1m2025-05-21 23:24:40 info END: Password changed successfully for user: 6825ca95e21cd006486f253b[22m[39m
+[36m[1m2025-05-22 12:23:40 info Password reset requested by attahjonah93@gmail.com, token sent.[22m[39m
+[36m[1m2025-05-22 12:32:34 info Password reset requested by attahjonah93@gmail.com, token sent.[22m[39m
+[31m[1m2025-05-22 12:46:16 error Error in forgotPassword: AUTH_URL is not defined[22m[39m
+[31m[1mReferenceError: AUTH_URL is not defined[22m[39m
+[31m[1m    at exports.forgotPassword (C:\Users\ZINOX\Desktop\BeRoStock API\src\controllers\authControllers\forgotPassword.js:28:23)[22m[39m
+[31m[1m    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)[22m[39m
+[36m[1m2025-05-22 12:49:04 info Password reset requested by attahjonah93@gmail.com, token sent.[22m[39m
+[36m[1m2025-05-22 12:55:43 info Password reset requested by attahjonah93@gmail.com, token sent.[22m[39m
+[36m[1m2025-05-22 12:57:45 info Password reset requested by attahjonah93@gmail.com, token sent.[22m[39m
+[36m[1m2025-05-22 13:09:47 info Password reset requested by attahjonah93@gmail.com, token sent.[22m[39m
+[36m[1m2025-05-22 14:16:35 info Password reset requested by attahjonah93@gmail.com, token sent.[22m[39m
+[36m[1m2025-05-22 14:43:58 info Password reset requested by attahjonah93@gmail.com, token sent.[22m[39m
+[36m[1m2025-05-23 16:42:08 info Verification code email sent to attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-23 16:42:08 info New user registered: attahjonah93@gmail.com as manager[22m[39m
+[36m[1m2025-05-23 16:48:02 info START: Verifying email for attahjonah93@gmail.com[22m[39m
+[31m[1m2025-05-23 16:48:03 error Verification error: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received type number (905940)[22m[39m
+[36m[1m2025-05-23 16:53:33 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 16:53:33 info New user registered: devsouza93@gmail.com as admin[22m[39m
+[36m[1m2025-05-23 16:54:41 info START: Verifying email for devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 16:54:41 info Email verified for user: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 17:11:56 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-23 17:12:13 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-23 17:12:13 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 17:32:47 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-23 17:32:48 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 17:34:01 info START: Attempting to change password for user: 683099fb998de5d768272270[22m[39m
+[36m[1m2025-05-23 17:34:04 info END: Password changed successfully for user: 683099fb998de5d768272270[22m[39m
+[36m[1m2025-05-23 17:57:59 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[31m[1m2025-05-23 17:57:59 error Forgot password error: generateResetToken is not a function[22m[39m
+[36m[1m2025-05-23 18:10:59 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:11:02 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[31m[1m2025-05-23 18:11:02 error Forgot password error: hmacProcess is not a function[22m[39m
+[36m[1m2025-05-23 18:18:56 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:18:59 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[31m[1m2025-05-23 18:18:59 error Forgot password error: Cannot read properties of undefined (reading 'createHmac')[22m[39m
+[36m[1m2025-05-23 18:21:48 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:21:51 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:21:52 info END: Forgot password code sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:26:58 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:27:01 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:27:01 info END: Forgot password code sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:28:43 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:28:46 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:28:46 info END: Forgot password code sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:29:14 info START: Reset password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:35:26 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:35:29 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:35:29 info END: Forgot password code sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:36:03 info START: Reset password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:36:03 info END: Password reset successful for user: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-23 18:37:02 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-23 18:37:02 info User logged in: devsouza93@gmail.com[22m[39m
