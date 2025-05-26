@@ -1,19 +1,19 @@
-const Router = require("express").Router;
-const productController = require("../controllers/productController");
-const productMiddleware = require("../middlewares/productMiddleware");
-const authMiddleware = require("../middlewares/authMiddleware");
+const express = require('express');
+const router = express.Router();
+const productController = require('../controllers/productController');
+const authenticate = require('../middlewares/authMiddleware'); 
+const authorizeRoles = require('../middlewares/roleMiddleware');
+const { productRateLimiter } = require('../middlewares/rateLimiter');
 
-const route = Router();
 
-route.post(
-  "/",
-  authMiddleware.ValidateToken,
-  productMiddleware.validatingProductCreated,
-  productController.CreateProduct
-);
-route.get("/", productController.GetAllProducts);
-route.get("/:productId", productController.GetProduct);
-route.put("/:productId", productController.UpdateProduct);
-route.delete("/:productId", productController.DeleteProduct);
 
-module.exports = route;
+// Apply rate-limiter middleware only to product routes
+router.use(authenticate, productRateLimiter);
+
+router.post('/', authorizeRoles('admin', 'manager'), productController.createProduct);
+router.get('/',  authorizeRoles("admin", "manager", "staff"), productController.getAllProducts);
+router.get('/:id',  authorizeRoles("admin", "manager", "staff"), productController.getProductById);
+router.put('/:id', authorizeRoles('admin', 'manager'), productController.updateProduct);
+router.delete('/:id', authorizeRoles('admin', 'manager'), productController.deleteProduct);
+
+module.exports = router;

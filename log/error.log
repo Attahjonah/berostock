@@ -66,3 +66,4 @@
 [31m[1m2025-05-23 17:57:59 error Forgot password error: generateResetToken is not a function[22m[39m
 [31m[1m2025-05-23 18:11:02 error Forgot password error: hmacProcess is not a function[22m[39m
 [31m[1m2025-05-23 18:18:59 error Forgot password error: Cannot read properties of undefined (reading 'createHmac')[22m[39m
+[31m[1m2025-05-25 21:21:55 error ERROR: Product validation failed: product_id: Path `product_id` is required., supplier: `Fouani Nig. Ltd` is not a valid enum value for path `supplier`.[22m[39m

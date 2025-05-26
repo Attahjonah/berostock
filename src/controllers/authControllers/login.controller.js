@@ -33,8 +33,8 @@ exports.login = async (req, res) => {
           }
   
       // Generate tokens
-      const accessToken = generateAccessToken(user._id);
-      const refreshToken = generateRefreshToken(user._id);
+      const accessToken = generateAccessToken(user );
+      const refreshToken = generateRefreshToken(user);
   
       logger.info(`User logged in: ${email}`);
   

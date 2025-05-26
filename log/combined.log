@@ -186,3 +186,91 @@
 [36m[1m2025-05-23 18:36:03 info END: Password reset successful for user: devsouza93@gmail.com[22m[39m
 [36m[1m2025-05-23 18:37:02 info START: Attempting to log in a user[22m[39m
 [36m[1m2025-05-23 18:37:02 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 01:03:16 info Verification code email sent to attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-25 01:03:16 info New user registered: attahjonah93@gmail.com as staff[22m[39m
+[36m[1m2025-05-25 01:04:08 info START: Verifying email for attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-25 01:04:08 info Email verified for user: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-25 01:04:47 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 01:04:47 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-25 01:10:38 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 01:10:38 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 01:12:58 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 01:12:59 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 01:50:04 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 01:50:04 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 01:51:08 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-05-25 01:52:21 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 01:52:21 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 01:52:55 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-05-25 01:56:19 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 01:56:19 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 02:10:51 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 02:10:51 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 02:11:17 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-05-25 02:14:58 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 02:14:58 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 02:15:24 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-05-25 19:25:08 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 19:25:08 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 19:37:25 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 19:37:25 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 19:38:01 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-05-25 19:43:13 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 19:43:14 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 19:48:38 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 19:49:22 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 19:49:23 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 19:50:04 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-05-25 19:59:13 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 19:59:13 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 20:00:06 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-05-25 20:00:07 info END: Successfully created a new product[22m[39m
+[36m[1m2025-05-25 20:02:50 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 20:02:50 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-25 20:08:49 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 20:08:50 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 20:11:57 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 20:11:58 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 20:12:27 info START: Fetching all products[22m[39m
+[36m[1m2025-05-25 20:12:27 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-05-25 20:23:16 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 20:23:17 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-25 20:24:03 info START: Fetching all products[22m[39m
+[36m[1m2025-05-25 20:26:05 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 20:26:05 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 20:26:33 info START: Fetching all products[22m[39m
+[36m[1m2025-05-25 20:26:33 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-05-25 20:27:07 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 20:27:08 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-25 20:27:35 info START: Fetching all products[22m[39m
+[36m[1m2025-05-25 20:50:08 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 20:50:09 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-25 20:50:44 info START: Fetching all products[22m[39m
+[36m[1m2025-05-25 20:50:44 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-05-25 20:52:03 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 20:52:03 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 20:52:32 info START: Fetching all products[22m[39m
+[36m[1m2025-05-25 20:52:33 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-05-25 20:53:09 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 20:53:09 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-05-25 20:53:39 info START: Fetching all products[22m[39m
+[36m[1m2025-05-25 20:53:39 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-05-25 21:00:01 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 21:00:02 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 21:00:46 info START: Fetching product with ID e35debc5-c9da-4623-ba5b-98f7bbffd059[22m[39m
+[36m[1m2025-05-25 21:00:46 info END: Successfully fetched product with ID e35debc5-c9da-4623-ba5b-98f7bbffd059[22m[39m
+[36m[1m2025-05-25 21:10:05 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 21:10:05 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 21:10:53 info START: Updating product with ID e35debc5-c9da-4623-ba5b-98f7bbffd059[22m[39m
+[36m[1m2025-05-25 21:10:53 info END: Successfully updated product with ID e35debc5-c9da-4623-ba5b-98f7bbffd059[22m[39m
+[36m[1m2025-05-25 21:12:03 info START: Deleting product with ID e35debc5-c9da-4623-ba5b-98f7bbffd059[22m[39m
+[36m[1m2025-05-25 21:12:03 info END: Successfully deleted product with ID e35debc5-c9da-4623-ba5b-98f7bbffd059[22m[39m
+[36m[1m2025-05-25 21:12:22 info START: Fetching all products[22m[39m
+[36m[1m2025-05-25 21:17:23 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-25 21:17:24 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-25 21:18:33 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-05-25 21:18:33 info END: Successfully created a new product[22m[39m
+[36m[1m2025-05-25 21:18:57 info START: Fetching all products[22m[39m
+[36m[1m2025-05-25 21:18:57 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-05-25 21:21:55 info START: Attempting to create a new product[22m[39m
+[31m[1m2025-05-25 21:21:55 error ERROR: Product validation failed: product_id: Path `product_id` is required., supplier: `Fouani Nig. Ltd` is not a valid enum value for path `supplier`.[22m[39m

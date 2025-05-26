@@ -61,11 +61,27 @@ const resetPasswordLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+
+const productRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` per route
+  message: {
+    success: false,
+    message: 'Too many requests from this IP, please try again later',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+
+
+
 module.exports = {
   loginRateLimiter,
   signupRateLimiter,
   resetRateLimiter,
   changePasswordRateLimiter,
   forgotPasswordLimiter,
-  resetPasswordLimiter
+  resetPasswordLimiter,
+  productRateLimiter
 };
