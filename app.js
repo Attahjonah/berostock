@@ -11,7 +11,7 @@ const passport = require("./src/config/passport");
 const MongoStore = require("connect-mongo");
 const authRouter = require("./src/routes/authRoute");
 const productRouter = require("./src/routes/productRoute");
-//const salesRouter = require("./src/routes/sales.route");
+const salesRouter = require("./src/routes/saleRoute");
 
 const { API_VERSION, SESSION_SECRET } = process.env;
 const app = express();
@@ -56,7 +56,7 @@ app.get("/", (req, res) => {
 app.use(`/api/v${API_VERSION}/auth/`, authRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/api/products", productRouter);
-//app.use("/api/sales", salesRouter);
+app.use("/api/sales", salesRouter);
 
 
 app.get("*", (req, res) => {

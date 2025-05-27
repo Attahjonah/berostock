@@ -1,5 +1,6 @@
 const Product = require('../models/productModel');
 const logger = require('../utils/logger');
+const { Parser } = require('json2csv');
 
 exports.createProduct = async (req, res) => {
   try {
@@ -172,5 +173,36 @@ exports.deleteProduct = async (req, res) => {
   } catch (error) {
     logger.error(`ERROR: ${error.message}`);
     res.status(500).json({ error: 'Failed to delete product' });
+  }
+};
+
+
+
+exports.exportProductsToCSV = async (req, res) => {
+  try {
+    const products = await Product.find().lean();
+
+    const isAdminOrManager = ['admin', 'manager'].includes(req.user.role);
+
+    const fields = [
+      { label: 'Product ID', value: 'product_id' },
+      { label: 'Name', value: 'name' },
+      { label: 'Quantity', value: 'quantity' },
+      ...(isAdminOrManager ? [{ label: 'Cost Price', value: 'cost_price' }] : []),
+      { label: 'Selling Price', value: 'selling_price' },
+      { label: 'Category', value: 'category' },
+      { label: 'Supplier', value: 'supplier' },
+      { label: 'Created At', value: row => new Date(row.created_at).toLocaleString() },
+    ];
+
+    const parser = new Parser({ fields });
+    const csv = parser.parse(products);
+
+    res.header('Content-Type', 'text/csv');
+    res.attachment('products.csv');
+    return res.send(csv);
+  } catch (error) {
+    console.error('❌ CSV export error:', error);
+    res.status(500).json({ message: 'Failed to export products' });
   }
 };

@@ -10,6 +10,7 @@ const { productRateLimiter } = require('../middlewares/rateLimiter');
 // Apply rate-limiter middleware only to product routes
 router.use(authenticate, productRateLimiter);
 
+router.get('/export', productController.exportProductsToCSV);
 router.post('/', authorizeRoles('admin', 'manager'), productController.createProduct);
 router.get('/',  authorizeRoles("admin", "manager", "staff"), productController.getAllProducts);
 router.get('/:id',  authorizeRoles("admin", "manager", "staff"), productController.getProductById);
