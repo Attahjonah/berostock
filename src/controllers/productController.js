@@ -135,9 +135,17 @@ exports.updateProduct = async (req, res) => {
   const { id } = req.params;
   try {
     logger.info(`START: Updating product with ID ${id}`);
+
+    const updateData = { ...req.body };
+
+    // Manually recalculate selling_price if cost_price is being updated
+    if (updateData.cost_price !== undefined) {
+      updateData.selling_price = updateData.cost_price * 1.2;
+    }
+
     const product = await Product.findOneAndUpdate(
       { product_id: id },
-      req.body,
+      updateData,
       { new: true, runValidators: true }
     );
 

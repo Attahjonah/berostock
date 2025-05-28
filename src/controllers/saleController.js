@@ -8,19 +8,37 @@ const { v4: uuidv4 } = require('uuid');
 
 exports.createSale = async (req, res) => {
   try {
-    const { product_id: productUUID, quantity, mode_of_payment } = req.body;
+    const { product_id, quantity, mode_of_payment } = req.body;
 
     if (!['POS', 'Transfer', 'Cash'].includes(mode_of_payment)) {
-        return res.status(400).json({ message: 'Invalid mode of payment' });
+      return res.status(400).json({ message: 'Invalid mode of payment' });
     }
 
-    // ✅ Find product by UUID
-    const product = await Product.findOne({ product_id: productUUID });
-    if (!product) return res.status(404).json({ message: "Product not found" });
+    // 🔍 Find product by either _id or UUID
+    let product = null;
 
+    if (mongoose.Types.ObjectId.isValid(product_id)) {
+      product = await Product.findOne({ _id: product_id });
+    }
+
+    if (!product) {
+      product = await Product.findOne({ product_id });
+    }
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // 🚫 Check stock availability
+    if (product.quantity < quantity) {
+      return res.status(400).json({ message: "Insufficient stock" });
+    }
+
+    // 💰 Calculate totals
     const total_price = +(product.selling_price * quantity).toFixed(2);
     const profit_made = +((product.selling_price - product.cost_price) * quantity).toFixed(2);
 
+    // 🛒 Create sale
     const sale = await Sale.create({
       user_id: req.user._id,
       product_id: product._id,
@@ -32,12 +50,16 @@ exports.createSale = async (req, res) => {
       mode_of_payment
     });
 
-    // ✅ Prepare response based on user role
+    // 📉 Deduct quantity from product stock
+    product.quantity -= quantity;
+    await product.save();
+
+    // 🧾 Prepare response
     const response = {
       message: "Sale recorded successfully",
       sale: {
         _id: sale._id,
-        product_id: product.product_id, // return UUID for readability
+        product_id: product.product_id, // Return UUID for frontend readability
         quantity: sale.quantity,
         selling_price: sale.selling_price,
         total_price: sale.total_price,
@@ -46,17 +68,17 @@ exports.createSale = async (req, res) => {
       }
     };
 
-    // ✅ Include sensitive fields only for admin and manager
-    if (req.user.role === 'admin' || req.user.role === 'manager') {
+    // 🔐 Include sensitive fields for admins and managers
+    if (['admin', 'manager'].includes(req.user.role)) {
       response.sale.cost_price = sale.cost_price;
       response.sale.profit_made = sale.profit_made;
     }
 
-    res.status(201).json(response);
+    return res.status(201).json(response);
 
   } catch (error) {
     console.error("❌ Create sale error:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -82,20 +104,20 @@ exports.getAllSales = async (req, res) => {
 
     const query = {};
 
-    // 📦 Filter by product_id (exact match)
+    // Filter by product_id (exact match)
     if (product_id) {
       query.product_id = product_id;
     }
 
-    // 🔍 Search by product name
+    // Search by product name
     if (search) {
       const productIds = await Product.find({
         name: { $regex: search, $options: 'i' },
-      }).distinct('product_id');
+      }).distinct('_id');
       query.product_id = { $in: productIds };
     }
 
-    // 👤 Filter by userId
+    // Filter by userId
     if (userId) {
       if (mongoose.Types.ObjectId.isValid(userId)) {
         query.user_id = userId;
@@ -104,19 +126,21 @@ exports.getAllSales = async (req, res) => {
       }
     }
 
-    // 📅 Filter by date range
+    // Filter by date range
     if (startDate || endDate) {
-      query.created_at = {};
-      if (startDate) query.created_at.$gte = new Date(startDate);
-      if (endDate) query.created_at.$lte = new Date(endDate);
+      query.date_of_sale = {};
+      if (startDate) query.date_of_sale.$gte = new Date(startDate);
+      if (endDate) query.date_of_sale.$lte = new Date(endDate);
     }
 
-    // Query execution
+    // Query execution with user and product populated
     const total = await Sale.countDocuments(query);
     const sales = await Sale.find(query)
       .skip(skip)
       .limit(parseInt(limit))
-      .sort({ created_at: -1 });
+      .sort({ date_of_sale: -1 })
+      .populate('user_id', 'firstName lastName')
+      .populate('product_id', 'product_id name');
 
     const totalSales = sales.reduce((acc, sale) => acc + sale.total_price, 0);
     const totalProfit =
@@ -124,13 +148,38 @@ exports.getAllSales = async (req, res) => {
         ? sales.reduce((acc, sale) => acc + sale.profit_made, 0)
         : undefined;
 
-    // Filter fields for normal users
     const responseSales = sales.map((sale) => {
       const saleObj = sale.toObject();
+
+      // Format date_of_sale as YYYY-MM-DD
+      saleObj.date_of_sale = saleObj.date_of_sale instanceof Date
+        ? saleObj.date_of_sale.toISOString().split('T')[0]
+        : 'Unknown';
+
+      // Include sale_id (UUID)
+      saleObj.sale_id = sale.sale_id;
+
+      // Add sold_by field combining user's first and last names
+      saleObj.sold_by = sale.user_id
+        ? `${sale.user_id.firstName} ${sale.user_id.lastName}`
+        : 'Unknown';
+
+      // Replace product_id ObjectId with UUID string for readability
+      if (sale.product_id && sale.product_id.product_id) {
+        saleObj.product_id = sale.product_id.product_id;
+        saleObj.product_name = sale.product_id.name;
+      }
+
+      // Remove sensitive fields for normal users
       if (userRole !== 'admin' && userRole !== 'manager') {
         delete saleObj.profit_made;
         delete saleObj.cost_price;
       }
+
+      // Optionally remove full user_id and product_id objects from response
+      delete saleObj.user_id;
+      delete saleObj.product_id; // you can keep or remove based on preference
+
       return saleObj;
     });
 
@@ -150,12 +199,12 @@ exports.getAllSales = async (req, res) => {
 };
 
 
-
 exports.getSaleById = async (req, res) => {
   try {
     const { id } = req.params;
     const { role: userRole } = req.user;
 
+    // Try to find sale by either sale_id (UUID) or _id (ObjectId)
     const query = {
       $or: [
         { sale_id: id },
@@ -167,74 +216,108 @@ exports.getSaleById = async (req, res) => {
     if (!sale) return res.status(404).json({ error: 'Sale not found' });
 
     const saleObj = sale.toObject();
-    if (userRole !== 'admin' && userRole !== 'manager') {
+    if (!['admin', 'manager'].includes(userRole)) {
       delete saleObj.profit_made;
       delete saleObj.cost_price;
     }
 
     return res.status(200).json({ success: true, data: saleObj });
   } catch (error) {
-    console.error('❌ Error fetching sale by ID:', error.message);
+    console.error('❌ Error fetching sale by ID:', error);
     return res.status(500).json({ error: 'Server error while fetching sale' });
   }
 };
 
 
 exports.updateSale = async (req, res) => {
-  const user_id = req.user._id;
-  const userRole = req.user.role;
-  const { id } = req.params;
-  const { product_id, quantity } = req.body;
+  try {
+    const user_id = req.user._id;
+    const userRole = req.user.role;
+    const { id } = req.params;
+    const { product_id, quantity } = req.body;
 
-  if (!product_id || !quantity) {
-    return res.status(400).json({ error: 'Product ID and quantity are required' });
+    if (!product_id || !quantity) {
+      return res.status(400).json({ error: 'Product ID and quantity are required' });
+    }
+
+    // 🧠 Try finding the sale by sale_id (UUID) or Mongo _id
+    const query = {
+      $or: [
+        { sale_id: id },
+        mongoose.Types.ObjectId.isValid(id) ? { _id: id } : null,
+      ].filter(Boolean),
+    };
+
+    const sale = await Sale.findOne(query);
+    if (!sale) {
+      return res.status(404).json({ error: 'Sale not found' });
+    }
+
+    // 🛑 Check permission
+    if (
+      sale.user_id.toString() !== user_id.toString() &&
+      userRole !== 'admin' &&
+      userRole !== 'manager'
+    ) {
+      return res.status(403).json({ error: 'Unauthorized to update this sale' });
+    }
+
+    // 🔄 Restore quantity to the previous product
+    const oldProduct = await Product.findById(sale.product_id);
+    if (oldProduct) {
+      oldProduct.quantity += sale.quantity;
+      await oldProduct.save();
+    }
+
+    // 🔍 Find new product by either _id or UUID
+    let newProduct = null;
+
+    if (mongoose.Types.ObjectId.isValid(product_id)) {
+      newProduct = await Product.findOne({ _id: product_id });
+    }
+
+    if (!newProduct) {
+      newProduct = await Product.findOne({ product_id: product_id });
+    }
+
+    if (!newProduct) {
+      return res.status(404).json({ error: 'New product not found' });
+    }
+
+    if (newProduct.quantity < quantity) {
+      return res.status(400).json({ error: 'Insufficient stock for new product' });
+    }
+
+    // 🧾 Deduct quantity from new product stock
+    newProduct.quantity -= quantity;
+    await newProduct.save();
+
+    // ✅ Update sale fields
+    sale.product_id = newProduct._id;
+    sale.quantity = quantity;
+    sale.cost_price = newProduct.cost_price;
+    sale.selling_price = newProduct.selling_price;
+    sale.total_price = +(quantity * newProduct.selling_price).toFixed(2);
+    sale.profit_made = +(sale.total_price - (sale.cost_price * quantity)).toFixed(2);
+    sale.updated_at = new Date();
+    await sale.save();
+
+    const responseData = sale.toObject();
+    if (userRole !== 'admin' && userRole !== 'manager') {
+      delete responseData.cost_price;
+      delete responseData.profit_made;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Sale updated successfully',
+      data: responseData,
+    });
+
+  } catch (error) {
+    console.error('❌ Error updating sale:', error.message);
+    return res.status(500).json({ error: 'Server error while updating sale' });
   }
-
-  const query = {
-    $or: [
-      { sale_id: id },
-      mongoose.Types.ObjectId.isValid(id) ? { _id: id } : null,
-    ].filter(Boolean)
-  };
-
-  const sale = await Sale.findOne(query);
-  if (!sale) return res.status(404).json({ error: 'Sale not found' });
-
-  if (sale.user_id.toString() !== user_id.toString() && userRole !== 'admin' && userRole !== 'manager') {
-    return res.status(403).json({ error: 'Unauthorized to update this sale' });
-  }
-
-  const previousProduct = await Product.findOne({ product_id: sale.product_id });
-  if (previousProduct) {
-    previousProduct.quantity += sale.quantity;
-    await previousProduct.save();
-  }
-
-  const newProduct = await Product.findOne({ product_id });
-  if (!newProduct) return res.status(404).json({ error: 'New product not found' });
-  if (newProduct.quantity < quantity) {
-    return res.status(400).json({ error: 'Insufficient stock for new product' });
-  }
-
-  newProduct.quantity -= quantity;
-  await newProduct.save();
-
-  sale.product_id = product_id;
-  sale.quantity = quantity;
-  sale.cost_price = newProduct.cost_price;
-  sale.selling_price = newProduct.selling_price;
-  sale.total_price = quantity * newProduct.selling_price;
-  sale.profit_made = sale.total_price - (sale.cost_price * quantity);
-  sale.updated_at = new Date();
-  await sale.save();
-
-  const responseData = sale.toObject();
-  if (userRole !== 'admin' && userRole !== 'manager') {
-    delete responseData.cost_price;
-    delete responseData.profit_made;
-  }
-
-  res.status(200).json({ success: true, message: 'Sale updated', data: responseData });
 };
 
 
@@ -254,11 +337,19 @@ exports.deleteSale = async (req, res) => {
     const sale = await Sale.findOne(query);
     if (!sale) return res.status(404).json({ error: 'Sale not found' });
 
-    if (sale.user_id.toString() !== user_id.toString() && userRole !== 'admin' && userRole !== 'manager') {
+    if (sale.user_id.toString() !== user_id.toString() && !['admin', 'manager'].includes(userRole)) {
       return res.status(403).json({ error: 'Unauthorized to delete this sale' });
     }
 
-    const product = await Product.findOne({ product_id: sale.product_id });
+    // Find product by either _id or UUID to restore stock
+    let product = null;
+    if (mongoose.Types.ObjectId.isValid(sale.product_id)) {
+      product = await Product.findById(sale.product_id);
+    }
+    if (!product) {
+      product = await Product.findOne({ product_id: sale.product_id });
+    }
+
     if (product) {
       product.quantity += sale.quantity;
       await product.save();
@@ -291,13 +382,14 @@ exports.exportSalesToCSV = async (req, res) => {
         product_name: sale.product_id?.name || 'Unknown',
         quantity: sale.quantity,
         selling_price: sale.product_id?.selling_price || 0,
-        cost_price: userRole !== 'admin' && userRole !== 'manager' ? undefined : cost_price,
-        profit_made: userRole !== 'admin' && userRole !== 'manager' ? undefined : profit_made,
+        cost_price: ['admin', 'manager'].includes(userRole) ? cost_price : undefined,
+        profit_made: ['admin', 'manager'].includes(userRole) ? profit_made : undefined,
         total_price: total_price,
         sold_by: sale.user_id ? `${sale.user_id.firstName} ${sale.user_id.lastName}` : 'Unknown',
         mode_of_payment: sale.mode_of_payment || 'N/A',
-        date_of_sale: sale.date_of_sale ? sale.date_of_sale.toISOString().split('T')[0] : 'Unknown'
-
+        date_of_sale: sale.date_of_sale instanceof Date
+      ? sale.date_of_sale.toISOString().split('T')[0]
+      : 'Unknown',
       };
     });
 

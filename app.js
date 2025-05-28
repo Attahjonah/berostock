@@ -18,7 +18,7 @@ const app = express();
 
 
 
-const { swaggerUi, specs } = require("./src/config/swagger");
+const {  swaggerServe, swaggerSetup, specs  } = require("./src/config/swagger");
 
 app.use(morgan("dev"));
 app.use(cors());
@@ -39,7 +39,7 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24,
     },
   })
-);
+); 
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,9 +54,10 @@ app.get("/", (req, res) => {
   
 // Routes definition
 app.use(`/api/v${API_VERSION}/auth/`, authRouter);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+app.use("/api-docs", swaggerServe, swaggerSetup(specs));
 app.use("/api/products", productRouter);
 app.use("/api/sales", salesRouter);
+
 
 
 app.get("*", (req, res) => {
