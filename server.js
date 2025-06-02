@@ -4,9 +4,7 @@ const app = require("./app")
 
 require("./src/config/db").connectToMongoDB()
 
-const PORT = process.env.PORT
-
-
-app.listen(PORT, ()=>{
-    console.log(`Server running on port ${PORT}`)
-})
+const PORT = process.env.PORT || 2025;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
