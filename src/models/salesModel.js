@@ -8,20 +8,28 @@ const saleSchema = new mongoose.Schema({
     unique: true,
     required: true
   },
-  product_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product',
-    required: true
-  },
+  products: [
+    {
+      product_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true
+      },
+      quantity: {
+        type: Number,
+        required: true,
+        min: [1, 'Quantity must be at least 1']
+      }
+    }
+  ],
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  quantity: {
-    type: Number,
-    required: true,
-    min: [1, 'Quantity must be at least 1']
+  customer_name: {
+    type: String,
+    default: 'Walk-in Customer'
   },
   total_price: {
     type: Number,

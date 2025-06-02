@@ -505,3 +505,72 @@
 [36m[1m2025-05-28 15:53:10 info User logged in: devsouza93@gmail.com[22m[39m
 [36m[1m2025-05-28 16:00:38 info START: Attempting to log in a user[22m[39m
 [36m[1m2025-05-28 16:00:39 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-30 13:56:02 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-30 13:56:02 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-30 13:57:15 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-05-30 13:57:16 info END: Successfully created a new product[22m[39m
+[36m[1m2025-05-30 13:58:30 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-05-30 13:58:30 info END: Successfully created a new product[22m[39m
+[36m[1m2025-05-30 13:59:23 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-05-30 13:59:23 info END: Successfully created a new product[22m[39m
+[36m[1m2025-05-30 14:00:01 info START: Fetching all products[22m[39m
+[36m[1m2025-05-30 14:00:01 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-05-30 14:11:50 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-30 14:11:50 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-30 14:23:14 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-30 14:23:14 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-30 14:52:21 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-30 14:52:21 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-30 15:08:48 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-30 15:08:49 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-30 15:09:10 info START: Fetching all products[22m[39m
+[36m[1m2025-05-30 15:09:10 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-05-30 15:30:39 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-30 15:30:39 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-05-30 16:07:20 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-05-30 16:07:20 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-01 01:28:48 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-01 01:28:48 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-01 01:29:46 info START: Fetching all products[22m[39m
+[36m[1m2025-06-01 01:29:46 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-06-01 01:35:23 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-01 01:35:23 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-01 01:58:40 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-01 01:58:40 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-01 02:01:14 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-01 02:01:15 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-01 02:01:44 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-06-01 02:01:44 info END: Successfully created a new product[22m[39m
+[36m[1m2025-06-02 00:14:51 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-02 00:14:51 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-02 00:19:03 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-06-02 00:19:03 info END: Successfully created a new product[22m[39m
+[36m[1m2025-06-02 00:21:00 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-06-02 00:21:00 info END: Successfully created a new product[22m[39m
+[36m[1m2025-06-02 00:21:28 info START: Fetching all products[22m[39m
+[36m[1m2025-06-02 00:21:29 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-06-02 00:23:47 info START: Fetching product with ID 434cc10a-abbc-49c2-b7fd-cde1876ae55e[22m[39m
+[36m[1m2025-06-02 00:23:47 info END: Successfully fetched product with ID 434cc10a-abbc-49c2-b7fd-cde1876ae55e[22m[39m
+[36m[1m2025-06-02 00:25:42 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-02 00:25:42 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-02 00:26:09 info START: Updating product with ID 434cc10a-abbc-49c2-b7fd-cde1876ae55e[22m[39m
+[36m[1m2025-06-02 00:26:09 info END: Successfully updated product with ID 434cc10a-abbc-49c2-b7fd-cde1876ae55e[22m[39m
+[36m[1m2025-06-02 00:27:12 info START: Deleting product with ID 434cc10a-abbc-49c2-b7fd-cde1876ae55e[22m[39m
+[36m[1m2025-06-02 00:27:13 info END: Successfully deleted product with ID 434cc10a-abbc-49c2-b7fd-cde1876ae55e[22m[39m
+[36m[1m2025-06-02 00:28:11 info START: Fetching product with ID 434cc10a-abbc-49c2-b7fd-cde1876ae55e[22m[39m
+[36m[1m2025-06-02 00:39:16 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-02 00:39:16 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-02 00:41:50 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-02 00:41:50 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-02 01:32:34 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-02 01:32:35 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-02 01:54:15 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-02 01:54:15 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-02 01:58:25 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-02 01:58:25 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-02 02:16:15 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-02 02:16:15 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-02 02:31:29 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-02 02:31:29 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-02 02:42:50 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-02 02:42:51 info User logged in: devsouza93@gmail.com[22m[39m

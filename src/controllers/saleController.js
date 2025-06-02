@@ -5,80 +5,85 @@ const Product = require('../models/productModel');
 const User = require('../models/userModel')
 const { v4: uuidv4 } = require('uuid');
 
+const generateInvoicePdf = require('../utils/generateInvoiceUtils'); 
 
 exports.createSale = async (req, res) => {
   try {
-    const { product_id, quantity, mode_of_payment } = req.body;
+    const { products, mode_of_payment, customer_name = 'Walk-in Customer' } = req.body;
+
+    if (!Array.isArray(products) || products.length === 0) {
+      return res.status(400).json({ message: 'Products array is required' });
+    }
+
+    // Check for duplicate product_ids
+    const productIds = products.map(p => p.product_id);
+    const uniqueIds = new Set(productIds.map(id => id.toString()));
+    if (productIds.length !== uniqueIds.size) {
+      return res.status(400).json({ message: 'Duplicate products are not allowed in a sale' });
+    }
+
 
     if (!['POS', 'Transfer', 'Cash'].includes(mode_of_payment)) {
       return res.status(400).json({ message: 'Invalid mode of payment' });
     }
 
-    // 🔍 Find product by either _id or UUID
-    let product = null;
+    let total_price = 0;
+    let total_profit = 0;
+    const saleProducts = [];
 
-    if (mongoose.Types.ObjectId.isValid(product_id)) {
-      product = await Product.findOne({ _id: product_id });
+    for (const item of products) {
+      const { product_id, quantity } = item;
+
+      if (quantity <= 0) {
+        return res.status(400).json({ message: 'Quantity must be greater than 0' });
+      }
+
+      let product = null;
+      if (mongoose.Types.ObjectId.isValid(product_id)) {
+        product = await Product.findById(product_id);
+      }
+      if (!product) {
+        product = await Product.findOne({ product_id });
+      }
+
+      if (!product) {
+        return res.status(404).json({ message: `Product not found: ${product_id}` });
+      }
+
+      if (product.quantity < quantity) {
+        return res.status(400).json({ message: `Insufficient stock for ${product.name}` });
+      }
+
+      product.quantity -= quantity;
+      await product.save();
+
+      const amount = +(product.selling_price * quantity).toFixed(2);
+      const profit = +((product.selling_price - product.cost_price) * quantity).toFixed(2);
+
+      total_price += amount;
+      total_profit += profit;
+
+      saleProducts.push({ product_id: product._id, quantity });
     }
 
-    if (!product) {
-      product = await Product.findOne({ product_id });
-    }
-
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    // 🚫 Check stock availability
-    if (product.quantity < quantity) {
-      return res.status(400).json({ message: "Insufficient stock" });
-    }
-
-    // 💰 Calculate totals
-    const total_price = +(product.selling_price * quantity).toFixed(2);
-    const profit_made = +((product.selling_price - product.cost_price) * quantity).toFixed(2);
-
-    // 🛒 Create sale
     const sale = await Sale.create({
       user_id: req.user._id,
-      product_id: product._id,
-      quantity,
-      cost_price: product.cost_price,
-      selling_price: product.selling_price,
-      total_price,
-      profit_made,
+      products: saleProducts,
+      customer_name,
+      total_price: +total_price.toFixed(2),
+      profit_made: +total_profit.toFixed(2),
       mode_of_payment
     });
 
-    // 📉 Deduct quantity from product stock
-    product.quantity -= quantity;
-    await product.save();
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'inline; filename=invoice.pdf');
 
-    // 🧾 Prepare response
-    const response = {
-      message: "Sale recorded successfully",
-      sale: {
-        _id: sale._id,
-        product_id: product.product_id, // Return UUID for frontend readability
-        quantity: sale.quantity,
-        selling_price: sale.selling_price,
-        total_price: sale.total_price,
-        createdAt: sale.createdAt,
-        mode_of_payment: sale.mode_of_payment
-      }
-    };
-
-    // 🔐 Include sensitive fields for admins and managers
-    if (['admin', 'manager'].includes(req.user.role)) {
-      response.sale.cost_price = sale.cost_price;
-      response.sale.profit_made = sale.profit_made;
-    }
-
-    return res.status(201).json(response);
-
+    await generateInvoicePdf(sale, res);
   } catch (error) {
     console.error("❌ Create sale error:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    if (!res.headersSent) {
+      return res.status(500).json({ message: "Internal server error" });
+    }
   }
 };
 
@@ -104,20 +109,29 @@ exports.getAllSales = async (req, res) => {
 
     const query = {};
 
-    // Filter by product_id (exact match)
+    // ✅ Filter by product_id or UUID
     if (product_id) {
-      query.product_id = product_id;
+      if (mongoose.Types.ObjectId.isValid(product_id)) {
+        query['products.product_id'] = new mongoose.Types.ObjectId(product_id);
+      } else {
+        const product = await Product.findOne({ product_id });
+        if (product) {
+          query['products.product_id'] = product._id;
+        } else {
+          return res.status(404).json({ error: 'Product not found' });
+        }
+      }
     }
 
-    // Search by product name
+    // ✅ Search by product name
     if (search) {
       const productIds = await Product.find({
         name: { $regex: search, $options: 'i' },
       }).distinct('_id');
-      query.product_id = { $in: productIds };
+      query['products.product_id'] = { $in: productIds };
     }
 
-    // Filter by userId
+    // ✅ Filter by user
     if (userId) {
       if (mongoose.Types.ObjectId.isValid(userId)) {
         query.user_id = userId;
@@ -126,60 +140,50 @@ exports.getAllSales = async (req, res) => {
       }
     }
 
-    // Filter by date range
+    // ✅ Date range filter
     if (startDate || endDate) {
       query.date_of_sale = {};
       if (startDate) query.date_of_sale.$gte = new Date(startDate);
       if (endDate) query.date_of_sale.$lte = new Date(endDate);
     }
 
-    // Query execution with user and product populated
     const total = await Sale.countDocuments(query);
     const sales = await Sale.find(query)
       .skip(skip)
       .limit(parseInt(limit))
       .sort({ date_of_sale: -1 })
       .populate('user_id', 'firstName lastName')
-      .populate('product_id', 'product_id name');
+      .populate('products.product_id', 'product_id name');
 
     const totalSales = sales.reduce((acc, sale) => acc + sale.total_price, 0);
-    const totalProfit =
-      userRole === 'admin' || userRole === 'manager'
-        ? sales.reduce((acc, sale) => acc + sale.profit_made, 0)
-        : undefined;
+    const totalProfit = ['admin', 'manager'].includes(userRole)
+      ? sales.reduce((acc, sale) => acc + sale.profit_made, 0)
+      : undefined;
 
     const responseSales = sales.map((sale) => {
       const saleObj = sale.toObject();
 
-      // Format date_of_sale as YYYY-MM-DD
       saleObj.date_of_sale = saleObj.date_of_sale instanceof Date
         ? saleObj.date_of_sale.toISOString().split('T')[0]
         : 'Unknown';
 
-      // Include sale_id (UUID)
       saleObj.sale_id = sale.sale_id;
-
-      // Add sold_by field combining user's first and last names
       saleObj.sold_by = sale.user_id
         ? `${sale.user_id.firstName} ${sale.user_id.lastName}`
         : 'Unknown';
 
-      // Replace product_id ObjectId with UUID string for readability
-      if (sale.product_id && sale.product_id.product_id) {
-        saleObj.product_id = sale.product_id.product_id;
-        saleObj.product_name = sale.product_id.name;
-      }
+      // Extract product details
+      saleObj.products = sale.products.map(p => ({
+        product_id: p.product_id?.product_id || p.product_id?._id || 'Unknown',
+        product_name: p.product_id?.name || 'Unknown',
+        quantity: p.quantity
+      }));
 
-      // Remove sensitive fields for normal users
-      if (userRole !== 'admin' && userRole !== 'manager') {
+      if (!['admin', 'manager'].includes(userRole)) {
         delete saleObj.profit_made;
-        delete saleObj.cost_price;
       }
 
-      // Optionally remove full user_id and product_id objects from response
       delete saleObj.user_id;
-      delete saleObj.product_id; // you can keep or remove based on preference
-
       return saleObj;
     });
 
@@ -204,22 +208,59 @@ exports.getSaleById = async (req, res) => {
     const { id } = req.params;
     const { role: userRole } = req.user;
 
-    // Try to find sale by either sale_id (UUID) or _id (ObjectId)
-    const query = {
-      $or: [
-        { sale_id: id },
-        mongoose.Types.ObjectId.isValid(id) ? { _id: id } : null,
-      ].filter(Boolean)
-    };
+    const orConditions = [];
 
-    const sale = await Sale.findOne(query);
-    if (!sale) return res.status(404).json({ error: 'Sale not found' });
+    // Match by Mongo _id
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      orConditions.push({ _id: id });
+    }
+
+    // Match by sale UUID
+    orConditions.push({ sale_id: id });
+
+    // Match by product_id (UUID string) inside products array
+    const product = mongoose.Types.ObjectId.isValid(id)
+      ? await Product.findById(id)
+      : await Product.findOne({ product_id: id });
+
+    if (product) {
+      orConditions.push({ 'products.product_id': product._id });
+    }
+
+    const query = { $or: orConditions };
+
+    const sale = await Sale.findOne(query)
+      .populate('user_id', 'firstName lastName')
+      .populate('products.product_id', 'product_id name cost_price selling_price');
+
+    if (!sale) {
+      return res.status(404).json({ error: 'Sale not found' });
+    }
 
     const saleObj = sale.toObject();
+
+    // Format user
+    saleObj.sold_by = sale.user_id
+      ? `${sale.user_id.firstName} ${sale.user_id.lastName}`
+      : 'Unknown';
+
+    // Format product info
+    saleObj.products = sale.products.map((p) => ({
+      product_id: p.product_id?.product_id || p.product_id?._id || 'Unknown',
+      product_name: p.product_id?.name || 'Unknown',
+      quantity: p.quantity,
+      selling_price: p.product_id?.selling_price || 0,
+      ...(userRole === 'admin' || userRole === 'manager' ? {
+        cost_price: p.product_id?.cost_price || 0,
+        profit_made: ((p.product_id?.selling_price || 0) - (p.product_id?.cost_price || 0)) * p.quantity
+      } : {})
+    }));
+
     if (!['admin', 'manager'].includes(userRole)) {
       delete saleObj.profit_made;
-      delete saleObj.cost_price;
     }
+
+    delete saleObj.user_id;
 
     return res.status(200).json({ success: true, data: saleObj });
   } catch (error) {
@@ -234,13 +275,26 @@ exports.updateSale = async (req, res) => {
     const user_id = req.user._id;
     const userRole = req.user.role;
     const { id } = req.params;
-    const { product_id, quantity } = req.body;
+    const { products, customer_name, mode_of_payment } = req.body;
 
-    if (!product_id || !quantity) {
-      return res.status(400).json({ error: 'Product ID and quantity are required' });
+    if (!Array.isArray(products) || products.length === 0) {
+      return res.status(400).json({ error: 'Products array is required for update' });
     }
 
-    // 🧠 Try finding the sale by sale_id (UUID) or Mongo _id
+    // Validate duplicates
+    const productIds = products.map(p => p.product_id.toString());
+    const uniqueIds = new Set(productIds);
+    if (productIds.length !== uniqueIds.size) {
+      return res.status(400).json({ message: 'Duplicate products are not allowed in update' });
+    }
+
+    // Validate mode_of_payment if provided
+    const allowedPayments = ['POS', 'Transfer', 'Cash'];
+    if (mode_of_payment && !allowedPayments.includes(mode_of_payment)) {
+      return res.status(400).json({ message: 'Invalid mode of payment' });
+    }
+
+    // Find the sale
     const query = {
       $or: [
         { sale_id: id },
@@ -253,74 +307,82 @@ exports.updateSale = async (req, res) => {
       return res.status(404).json({ error: 'Sale not found' });
     }
 
-    // 🛑 Check permission
     if (
       sale.user_id.toString() !== user_id.toString() &&
-      userRole !== 'admin' &&
-      userRole !== 'manager'
+      !['admin', 'manager'].includes(userRole)
     ) {
       return res.status(403).json({ error: 'Unauthorized to update this sale' });
     }
 
-    // 🔄 Restore quantity to the previous product
-    const oldProduct = await Product.findById(sale.product_id);
-    if (oldProduct) {
-      oldProduct.quantity += sale.quantity;
-      await oldProduct.save();
+    // Restore previous product stock
+    for (const item of sale.products) {
+      const oldProduct = await Product.findById(item.product_id);
+      if (oldProduct) {
+        oldProduct.quantity += item.quantity;
+        await oldProduct.save();
+      }
     }
 
-    // 🔍 Find new product by either _id or UUID
-    let newProduct = null;
+    // Process new products
+    const updatedProducts = [];
+    let total_price = 0;
+    let total_profit = 0;
 
-    if (mongoose.Types.ObjectId.isValid(product_id)) {
-      newProduct = await Product.findOne({ _id: product_id });
+    for (const item of products) {
+      const { product_id, quantity } = item;
+
+      if (quantity <= 0) {
+        return res.status(400).json({ message: 'Quantity must be greater than 0' });
+      }
+
+      let product = null;
+      if (mongoose.Types.ObjectId.isValid(product_id)) {
+        product = await Product.findById(product_id);
+      }
+      if (!product) {
+        product = await Product.findOne({ product_id });
+      }
+      if (!product) {
+        return res.status(404).json({ message: `Product not found: ${product_id}` });
+      }
+
+      if (product.quantity < quantity) {
+        return res.status(400).json({ message: `Insufficient stock for ${product.name}` });
+      }
+
+      product.quantity -= quantity;
+      await product.save();
+
+      const amount = +(product.selling_price * quantity).toFixed(2);
+      const profit = +((product.selling_price - product.cost_price) * quantity).toFixed(2);
+
+      total_price += amount;
+      total_profit += profit;
+
+      updatedProducts.push({ product_id: product._id, quantity });
     }
-
-    if (!newProduct) {
-      newProduct = await Product.findOne({ product_id: product_id });
-    }
-
-    if (!newProduct) {
-      return res.status(404).json({ error: 'New product not found' });
-    }
-
-    if (newProduct.quantity < quantity) {
-      return res.status(400).json({ error: 'Insufficient stock for new product' });
-    }
-
-    // 🧾 Deduct quantity from new product stock
-    newProduct.quantity -= quantity;
-    await newProduct.save();
 
     // ✅ Update sale fields
-    sale.product_id = newProduct._id;
-    sale.quantity = quantity;
-    sale.cost_price = newProduct.cost_price;
-    sale.selling_price = newProduct.selling_price;
-    sale.total_price = +(quantity * newProduct.selling_price).toFixed(2);
-    sale.profit_made = +(sale.total_price - (sale.cost_price * quantity)).toFixed(2);
+    sale.products = updatedProducts;
+    sale.customer_name = customer_name || sale.customer_name;
+    sale.mode_of_payment = mode_of_payment || sale.mode_of_payment;
+    sale.total_price = +total_price.toFixed(2);
+    sale.profit_made = +total_profit.toFixed(2);
     sale.updated_at = new Date();
     await sale.save();
 
-    const responseData = sale.toObject();
-    if (userRole !== 'admin' && userRole !== 'manager') {
-      delete responseData.cost_price;
-      delete responseData.profit_made;
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: 'Sale updated successfully',
-      data: responseData,
-    });
+    // ✅ Generate invoice
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=invoice-${sale.sale_id}.pdf`);
+    await generateInvoicePdf(sale, res);
 
   } catch (error) {
     console.error('❌ Error updating sale:', error.message);
-    return res.status(500).json({ error: 'Server error while updating sale' });
+    if (!res.headersSent) {
+      return res.status(500).json({ error: 'Server error while updating sale' });
+    }
   }
 };
-
-
 
 exports.deleteSale = async (req, res) => {
   try {
@@ -341,18 +403,19 @@ exports.deleteSale = async (req, res) => {
       return res.status(403).json({ error: 'Unauthorized to delete this sale' });
     }
 
-    // Find product by either _id or UUID to restore stock
-    let product = null;
-    if (mongoose.Types.ObjectId.isValid(sale.product_id)) {
-      product = await Product.findById(sale.product_id);
-    }
-    if (!product) {
-      product = await Product.findOne({ product_id: sale.product_id });
-    }
+    for (const item of sale.products) {
+      let product = null;
+      if (mongoose.Types.ObjectId.isValid(item.product_id)) {
+        product = await Product.findById(item.product_id);
+      }
+      if (!product) {
+        product = await Product.findOne({ product_id: item.product_id });
+      }
 
-    if (product) {
-      product.quantity += sale.quantity;
-      await product.save();
+      if (product) {
+        product.quantity += item.quantity;
+        await product.save();
+      }
     }
 
     await Sale.deleteOne({ _id: sale._id });
@@ -364,33 +427,37 @@ exports.deleteSale = async (req, res) => {
 };
 
 
-
 exports.exportSalesToCSV = async (req, res) => {
   try {
     const userRole = req.user.role;
 
     const sales = await Sale.find()
-      .populate('product_id')
+      .populate('products.product_id')
       .populate('user_id');
 
-    const salesData = sales.map((sale) => {
-      const cost_price = sale.product_id?.cost_price ?? 0;
-      const total_price = sale.total_price ?? 0;
-      const profit_made = total_price - (cost_price * sale.quantity);
+    const salesData = sales.flatMap((sale) => {
+      return sale.products.map((item) => {
+        const product = item.product_id;
+        const cost_price = product?.cost_price ?? 0;
+        const total_price = product?.selling_price ? product.selling_price * item.quantity : 0;
+        const profit_made = total_price - (cost_price * item.quantity);
 
-      return {
-        product_name: sale.product_id?.name || 'Unknown',
-        quantity: sale.quantity,
-        selling_price: sale.product_id?.selling_price || 0,
-        cost_price: ['admin', 'manager'].includes(userRole) ? cost_price : undefined,
-        profit_made: ['admin', 'manager'].includes(userRole) ? profit_made : undefined,
-        total_price: total_price,
-        sold_by: sale.user_id ? `${sale.user_id.firstName} ${sale.user_id.lastName}` : 'Unknown',
-        mode_of_payment: sale.mode_of_payment || 'N/A',
-        date_of_sale: sale.date_of_sale instanceof Date
-      ? sale.date_of_sale.toISOString().split('T')[0]
-      : 'Unknown',
-      };
+        return {
+          product_name: product?.name || 'Unknown',
+          quantity: item.quantity,
+          selling_price: product?.selling_price || 0,
+          cost_price: ['admin', 'manager'].includes(userRole) ? cost_price : undefined,
+          profit_made: ['admin', 'manager'].includes(userRole) ? profit_made : undefined,
+          total_price: total_price,
+          sold_by: sale.user_id
+            ? `${sale.user_id.firstName} ${sale.user_id.lastName}`
+            : 'Unknown',
+          mode_of_payment: sale.mode_of_payment || 'N/A',
+          date_of_sale: sale.date_of_sale instanceof Date
+            ? sale.date_of_sale.toISOString().split('T')[0]
+            : 'Unknown',
+        };
+      });
     });
 
     const fields = [
