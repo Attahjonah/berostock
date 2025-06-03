@@ -17,6 +17,10 @@ const options = {
         url: `http://localhost:${process.env.PORT || 2025}`,
         description: "Development server",
       },
+      {
+        url: `https://berostock.onrender.com`,
+        description: "Production server",
+      }
     ],
     components: {
       securitySchemes: {
