@@ -574,3 +574,52 @@
 [36m[1m2025-06-02 02:31:29 info User logged in: devsouza93@gmail.com[22m[39m
 [36m[1m2025-06-02 02:42:50 info START: Attempting to log in a user[22m[39m
 [36m[1m2025-06-02 02:42:51 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-06 11:23:54 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-06 11:23:54 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-06 11:41:07 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-06 11:41:08 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-06 11:42:28 info START: Fetching all products[22m[39m
+[36m[1m2025-06-06 11:42:29 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-06-06 11:43:30 info START: Fetching product with ID 683099fb998de5d768272270[22m[39m
+[36m[1m2025-06-06 11:44:02 info START: Fetching product with ID 6842bace68c050be177ef297[22m[39m
+[36m[1m2025-06-06 11:45:01 info START: Fetching product with ID a049da53-5bed-488b-ac6a-49096fcfaba2[22m[39m
+[36m[1m2025-06-06 11:45:01 info END: Successfully fetched product with ID a049da53-5bed-488b-ac6a-49096fcfaba2[22m[39m
+[36m[1m2025-06-06 11:48:24 info START: Updating product with ID 6842bace68c050be177ef297[22m[39m
+[36m[1m2025-06-06 11:48:56 info START: Updating product with ID a049da53-5bed-488b-ac6a-49096fcfaba2[22m[39m
+[36m[1m2025-06-06 11:48:56 info END: Successfully updated product with ID a049da53-5bed-488b-ac6a-49096fcfaba2[22m[39m
+[36m[1m2025-06-06 11:49:57 info START: Deleting product with ID 6842bace68c050be177ef297[22m[39m
+[36m[1m2025-06-06 11:50:23 info START: Deleting product with ID a049da53-5bed-488b-ac6a-49096fcfaba2[22m[39m
+[36m[1m2025-06-06 11:50:23 info END: Successfully deleted product with ID a049da53-5bed-488b-ac6a-49096fcfaba2[22m[39m
+[36m[1m2025-06-06 11:58:16 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-06 11:58:16 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-06 12:05:49 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-06 12:05:49 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-06 12:16:49 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-06 12:16:50 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-06 12:17:59 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-06-06 12:17:59 info END: Successfully created a new product[22m[39m
+[36m[1m2025-06-06 12:20:43 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-06-06 12:20:43 info END: Successfully created a new product[22m[39m
+[36m[1m2025-06-06 12:21:47 info START: Fetching all products[22m[39m
+[36m[1m2025-06-06 12:21:47 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-06-06 12:23:50 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-06 12:23:50 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-06 14:36:50 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-06 14:36:50 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-06 14:43:08 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-06 14:43:08 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-06 15:07:36 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-06 15:07:36 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-06 15:46:52 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-06 15:46:52 info User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-06 15:50:11 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-06-06 15:50:12 info END: Successfully created a new product[22m[39m
+[36m[1m2025-06-06 15:51:13 info START: Fetching product with ID a049da53-5bed-488b-ac6a-49096fcfaba2[22m[39m
+[36m[1m2025-06-06 15:51:53 info START: Fetching product with ID f365b8f7-123c-4d7b-806f-6d398ccfd342[22m[39m
+[36m[1m2025-06-06 15:51:54 info END: Successfully fetched product with ID f365b8f7-123c-4d7b-806f-6d398ccfd342[22m[39m
+[36m[1m2025-06-06 15:52:38 info START: Fetching product with ID 6843002335412c56eec28f32[22m[39m
+[36m[1m2025-06-06 15:52:38 info END: Successfully fetched product with ID 6843002335412c56eec28f32[22m[39m
+[36m[1m2025-06-06 15:54:19 info START: Updating product with ID 6843002335412c56eec28f32[22m[39m
+[36m[1m2025-06-06 15:54:19 info END: Successfully updated product with ID 6843002335412c56eec28f32[22m[39m
+[36m[1m2025-06-06 15:55:31 info START: Updating product with ID f365b8f7-123c-4d7b-806f-6d398ccfd342[22m[39m
+[36m[1m2025-06-06 15:55:32 info END: Successfully updated product with ID f365b8f7-123c-4d7b-806f-6d398ccfd342[22m[39m

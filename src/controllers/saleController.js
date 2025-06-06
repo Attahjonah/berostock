@@ -277,24 +277,11 @@ exports.updateSale = async (req, res) => {
     const { id } = req.params;
     const { products, customer_name, mode_of_payment } = req.body;
 
-    if (!Array.isArray(products) || products.length === 0) {
-      return res.status(400).json({ error: 'Products array is required for update' });
-    }
-
-    // Validate duplicates
-    const productIds = products.map(p => p.product_id.toString());
-    const uniqueIds = new Set(productIds);
-    if (productIds.length !== uniqueIds.size) {
-      return res.status(400).json({ message: 'Duplicate products are not allowed in update' });
-    }
-
-    // Validate mode_of_payment if provided
     const allowedPayments = ['POS', 'Transfer', 'Cash'];
     if (mode_of_payment && !allowedPayments.includes(mode_of_payment)) {
       return res.status(400).json({ message: 'Invalid mode of payment' });
     }
 
-    // Find the sale
     const query = {
       $or: [
         { sale_id: id },
@@ -314,60 +301,85 @@ exports.updateSale = async (req, res) => {
       return res.status(403).json({ error: 'Unauthorized to update this sale' });
     }
 
-    // Restore previous product stock
-    for (const item of sale.products) {
-      const oldProduct = await Product.findById(item.product_id);
-      if (oldProduct) {
-        oldProduct.quantity += item.quantity;
-        await oldProduct.save();
+    let updatedProducts = sale.products;
+    let total_price = sale.total_price;
+    let total_profit = sale.profit_made;
+
+    if (products) {
+      if (!Array.isArray(products) || products.length === 0) {
+        return res.status(400).json({ error: 'Products array must be non-empty if provided' });
       }
+
+      // Check duplicates
+      const productIds = products.map(p => p.product_id.toString());
+      const uniqueIds = new Set(productIds);
+      if (productIds.length !== uniqueIds.size) {
+        return res.status(400).json({ message: 'Duplicate products are not allowed' });
+      }
+
+      // Roll back previous stock
+      for (const item of sale.products) {
+        const oldProduct = await Product.findById(item.product_id);
+        if (oldProduct) {
+          oldProduct.quantity += item.quantity;
+          await oldProduct.save();
+        }
+      }
+
+      // Process new products
+      updatedProducts = [];
+      total_price = 0;
+      total_profit = 0;
+
+      for (const item of products) {
+        const { product_id, quantity } = item;
+
+        if (quantity <= 0) {
+          return res.status(400).json({ message: 'Quantity must be greater than 0' });
+        }
+
+        let product = null;
+        if (mongoose.Types.ObjectId.isValid(product_id)) {
+          product = await Product.findById(product_id);
+        }
+        if (!product) {
+          product = await Product.findOne({ product_id });
+        }
+
+        if (!product) {
+          return res.status(404).json({ message: `Product not found: ${product_id}` });
+        }
+
+        if (product.quantity < quantity) {
+          return res.status(400).json({ message: `Insufficient stock for ${product.name}` });
+        }
+
+        product.quantity -= quantity;
+        await product.save();
+
+        const amount = +(product.selling_price * quantity).toFixed(2);
+        const profit = +((product.selling_price - product.cost_price) * quantity).toFixed(2);
+
+        total_price += amount;
+        total_profit += profit;
+
+        updatedProducts.push({ product_id: product._id, quantity });
+      }
+
+      sale.products = updatedProducts;
+      sale.total_price = +total_price.toFixed(2);
+      sale.profit_made = +total_profit.toFixed(2);
     }
 
-    // Process new products
-    const updatedProducts = [];
-    let total_price = 0;
-    let total_profit = 0;
-
-    for (const item of products) {
-      const { product_id, quantity } = item;
-
-      if (quantity <= 0) {
-        return res.status(400).json({ message: 'Quantity must be greater than 0' });
-      }
-
-      let product = null;
-      if (mongoose.Types.ObjectId.isValid(product_id)) {
-        product = await Product.findById(product_id);
-      }
-      if (!product) {
-        product = await Product.findOne({ product_id });
-      }
-      if (!product) {
-        return res.status(404).json({ message: `Product not found: ${product_id}` });
-      }
-
-      if (product.quantity < quantity) {
-        return res.status(400).json({ message: `Insufficient stock for ${product.name}` });
-      }
-
-      product.quantity -= quantity;
-      await product.save();
-
-      const amount = +(product.selling_price * quantity).toFixed(2);
-      const profit = +((product.selling_price - product.cost_price) * quantity).toFixed(2);
-
-      total_price += amount;
-      total_profit += profit;
-
-      updatedProducts.push({ product_id: product._id, quantity });
+    // Apply other fields only if they exist in the request
+    if (typeof customer_name === 'string') {
+      sale.customer_name = customer_name;
     }
 
-    // ✅ Update sale fields
-    sale.products = updatedProducts;
-    sale.customer_name = customer_name || sale.customer_name;
-    sale.mode_of_payment = mode_of_payment || sale.mode_of_payment;
-    sale.total_price = +total_price.toFixed(2);
-    sale.profit_made = +total_profit.toFixed(2);
+    if (mode_of_payment) {
+      sale.mode_of_payment = mode_of_payment;
+    }
+
     sale.updated_at = new Date();
     await sale.save();
 
@@ -435,6 +447,8 @@ exports.exportSalesToCSV = async (req, res) => {
       .populate('products.product_id')
       .populate('user_id');
 
+      
+
     const salesData = sales.flatMap((sale) => {
       return sale.products.map((item) => {
         const product = item.product_id;
@@ -482,3 +496,12 @@ exports.exportSalesToCSV = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
+
+
+
+// const mongoose = require('mongoose')
+// const { Parser } = require('json2csv');
+// const Sale = require('../models/salesModel');
+// const Product = require('../models/productModel');
+// const User = require('../models/userModel')
+// const { v4: uuidv4 } = require('uuid');
