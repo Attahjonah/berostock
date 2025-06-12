@@ -623,3 +623,15 @@
 [36m[1m2025-06-06 15:54:19 info END: Successfully updated product with ID 6843002335412c56eec28f32[22m[39m
 [36m[1m2025-06-06 15:55:31 info START: Updating product with ID f365b8f7-123c-4d7b-806f-6d398ccfd342[22m[39m
 [36m[1m2025-06-06 15:55:32 info END: Successfully updated product with ID f365b8f7-123c-4d7b-806f-6d398ccfd342[22m[39m
+[36m[1m2025-06-12 02:40:09 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-12 02:40:09 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-12 02:51:28 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-12 02:51:28 info New user registered: devsouza93@gmail.com as staff[22m[39m
+[36m[1m2025-06-12 02:55:32 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-12 02:55:32 info New user registered: devsouza93@gmail.com as staff[22m[39m
+[36m[1m2025-06-12 03:07:48 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-12 03:07:49 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-12 03:17:53 info Admin attahjonah93@gmail.com changed role of devsouza93@gmail.com from staff to manager[22m[39m
+[36m[1m2025-06-12 03:36:40 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-12 03:36:41 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-12 03:38:50 info Refresh token blacklisted successfully[22m[39m

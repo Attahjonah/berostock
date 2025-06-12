@@ -12,6 +12,7 @@ const MongoStore = require("connect-mongo");
 const authRouter = require("./src/routes/authRoute");
 const productRouter = require("./src/routes/productRoute");
 const salesRouter = require("./src/routes/saleRoute");
+const adminRouter = require("./src/routes/adminRoute")
 
 const { API_VERSION, SESSION_SECRET } = process.env;
 const app = express();
@@ -57,6 +58,8 @@ app.use(`/api/v${API_VERSION}/auth/`, authRouter);
 app.use("/api-docs", swaggerServe, swaggerSetup(specs));
 app.use("/api/products", productRouter);
 app.use("/api/sales", salesRouter);
+app.use("/api/admin", adminRouter);
+
 
 
 

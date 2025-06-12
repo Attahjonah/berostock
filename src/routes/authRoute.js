@@ -30,13 +30,13 @@ const {
 
 
 
+
 /**
  * @swagger
  * /api/v1/auth/signup:
  *   post:
  *     summary: Register a new user
  *     tags: [Auth]
- *     description: Creates a new user with role-based validation and sends a verification code via email.
  *     requestBody:
  *       required: true
  *       content:
@@ -48,7 +48,6 @@ const {
  *               - lastName
  *               - email
  *               - password
- *               - role
  *             properties:
  *               firstName:
  *                 type: string
@@ -59,18 +58,14 @@ const {
  *               email:
  *                 type: string
  *                 format: email
- *                 example: john@example.com
+ *                 example: johndoe@example.com
  *               password:
  *                 type: string
+ *                 format: password
  *                 example: Password@123
- *                 description: Must be at least 8 characters, include upper/lowercase letters, number and symbol.
- *               role:
- *                 type: string
- *                 enum: [admin, manager, staff]
- *                 example: staff
  *     responses:
  *       201:
- *         description: User registered successfully, verification email sent.
+ *         description: User registered successfully
  *         content:
  *           application/json:
  *             schema:
@@ -81,35 +76,12 @@ const {
  *                   example: true
  *                 message:
  *                   type: string
- *                   example: User registered successfully. A verification code has been sent to john@example.com.
+ *                   example: User registered successfully.
  *       400:
- *         description: Invalid input, missing fields, or user already exists.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: Email already registered
+ *         description: Missing fields, invalid input, or email already registered
  *       500:
- *         description: Internal server error or email failure.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: Something went wrong.
+ *         description: Internal server error
  */
-
 router.post("/signup", signupRateLimiter, signup)
 
 
@@ -117,9 +89,8 @@ router.post("/signup", signupRateLimiter, signup)
  * @swagger
  * /api/v1/auth/login:
  *   post:
- *     summary: Log in a user
+ *     summary: Login a user
  *     tags: [Auth]
- *     description: Authenticates a user and returns access and refresh tokens.
  *     requestBody:
  *       required: true
  *       content:
@@ -136,6 +107,7 @@ router.post("/signup", signupRateLimiter, signup)
  *                 example: johndoe@example.com
  *               password:
  *                 type: string
+ *                 format: password
  *                 example: Password@123
  *     responses:
  *       200:
@@ -150,16 +122,14 @@ router.post("/signup", signupRateLimiter, signup)
  *                   example: Login successful
  *                 accessToken:
  *                   type: string
- *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *                 refreshToken:
  *                   type: string
- *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *                 user:
  *                   type: object
  *                   properties:
  *                     id:
  *                       type: string
- *                       example: 60e9f7d8c7d5a1223cba1f00
+ *                       example: 665ab1235fcdeab678abc123
  *                     firstName:
  *                       type: string
  *                       example: John
@@ -177,129 +147,18 @@ router.post("/signup", signupRateLimiter, signup)
  *                       example: true
  *       400:
  *         description: Missing email or password
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Email and password are required.
  *       401:
- *         description: Invalid credentials or user does not exist
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Invalid credentials!
+ *         description: Invalid credentials or user not found
  *       403:
  *         description: Email not verified
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Please verify your email before logging in.
  *       500:
  *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Internal server error
  */
-
 router.post("/login", loginRateLimiter, login)
 
 
-/**
- * @swagger
- * /api/v1/auth/verify-email:
- *   post:
- *     summary: Verify user email address
- *     tags: [Auth]
- *     description: Confirms a user's email address using a 6-digit verification code.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - code
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 example: johndoe@example.com
- *               code:
- *                 type: string
- *                 example: "123456"
- *     responses:
- *       200:
- *         description: Email successfully verified
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
- *                 message:
- *                   type: string
- *                   example: Email successfully verified. You can now log in.
- *       400:
- *         description: Invalid code, expired code, or missing fields
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: Verification code has expired.
- *       404:
- *         description: User not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: User not found.
- *       500:
- *         description: Server error during verification
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: Something went wrong.
- */
 
-router.post("/verify-email", verifyEmail)
+//router.post("/verify-email", verifyEmail)
 
 
 /**
