@@ -635,3 +635,27 @@
 [36m[1m2025-06-12 03:36:40 info START: Attempting to log in a user[22m[39m
 [36m[1m2025-06-12 03:36:41 info User logged in: attahjonah93@gmail.com[22m[39m
 [36m[1m2025-06-12 03:38:50 info Refresh token blacklisted successfully[22m[39m
+[36m[1m2025-06-12 11:33:19 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-12 11:33:19 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-12 11:34:26 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-06-12 11:34:26 info END: Successfully created a new product[22m[39m
+[36m[1m2025-06-12 11:35:50 info START: Fetching product with ID export[22m[39m
+[36m[1m2025-06-12 11:36:52 info START: Fetching all products[22m[39m
+[36m[1m2025-06-12 11:36:52 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-06-12 13:53:19 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-12 13:53:23 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-12 13:53:48 info START: Fetching all products[22m[39m
+[36m[1m2025-06-12 13:53:49 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-06-12 13:56:01 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-06-12 13:56:01 info END: Successfully created a new product[22m[39m
+[36m[1m2025-06-12 13:56:25 info START: Fetching all products[22m[39m
+[36m[1m2025-06-12 13:56:25 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-06-12 13:57:10 info START: Fetching product with ID export[22m[39m
+[36m[1m2025-06-12 14:21:24 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-12 14:21:24 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-12 14:39:29 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-12 14:39:30 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-12 14:44:47 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-12 14:44:48 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-12 14:50:16 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-12 14:50:16 info User logged in: attahjonah93@gmail.com[22m[39m

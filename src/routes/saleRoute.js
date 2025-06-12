@@ -11,17 +11,16 @@ router.use(saleRateLimiter); // Apply rate limit to all sale routes
 
 
 
-
 /**
  * @swagger
  * /api/sales:
  *   post:
- *     summary: Create a new sale
- *     tags: [Sales]
+ *     summary: Create a new sale and generate an invoice PDF
+ *     tags:
+ *       - Sales
  *     security:
  *       - bearerAuth: []
  *     requestBody:
- *       description: Sale creation payload
  *       required: true
  *       content:
  *         application/json:
@@ -33,7 +32,7 @@ router.use(saleRateLimiter); // Apply rate limit to all sale routes
  *             properties:
  *               products:
  *                 type: array
- *                 description: List of products sold in this sale
+ *                 description: List of products with quantities
  *                 items:
  *                   type: object
  *                   required:
@@ -42,32 +41,51 @@ router.use(saleRateLimiter); // Apply rate limit to all sale routes
  *                   properties:
  *                     product_id:
  *                       type: string
- *                       description: ObjectId or UUID of the product
- *                       example: 60d21b4667d0d8992e610c85
+ *                       description: Product MongoDB _id or custom product_id
+ *                       example: "665be6e5c5e5fcab3d3b56a1"
  *                     quantity:
  *                       type: integer
- *                       description: Quantity sold (must be > 0)
- *                       example: 3
+ *                       minimum: 1
+ *                       example: 2
  *               mode_of_payment:
  *                 type: string
  *                 enum: [POS, Transfer, Cash]
- *                 example: POS
+ *                 description: Payment method used by the customer
+ *                 example: "POS"
  *               customer_name:
  *                 type: string
- *                 description: Name of the customer (optional)
- *                 example: John Doe
+ *                 description: Name of the customer (defaults to 'Walk-in Customer')
+ *                 example: "John Doe"
  *     responses:
  *       200:
- *         description: PDF invoice generated inline
+ *         description: Invoice PDF stream
  *         content:
  *           application/pdf:
  *             schema:
  *               type: string
  *               format: binary
  *       400:
- *         description: Bad request, invalid input
+ *         description: Bad request - validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Products array is required"
+ *       401:
+ *         description: Unauthorized - missing or invalid token
  *       404:
  *         description: Product not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Product not found: 665..."
  *       500:
  *         description: Internal server error
  */
@@ -208,6 +226,29 @@ router.post('/', saleController.createSale);
  */
 
 router.get('/', saleController.getAllSales);
+
+
+
+/**
+ * @swagger
+ * /api/sales/export:
+ *   get:
+ *     summary: Export sales to CSV
+ *     tags: [Sales]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: CSV export
+ *         content:
+ *           text/csv:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       500:
+ *         description: Server error
+ */
+router.get('/export', saleController.exportSalesToCSV);
 
 
 /**
@@ -389,28 +430,6 @@ router.put('/:id', saleController.updateSale);
  *         description: Internal server error
  */
 router.delete('/:id', saleController.deleteSale);
-
-
-/**
- * @swagger
- * /api/sales/export:
- *   get:
- *     summary: Export sales to CSV
- *     tags: [Sales]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: CSV export
- *         content:
- *           text/csv:
- *             schema:
- *               type: string
- *               format: binary
- *       500:
- *         description: Server error
- */
-router.get('/export', saleController.exportSalesToCSV);
 
 
 

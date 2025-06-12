@@ -9,8 +9,8 @@ const productSchema = new mongoose.Schema({
     unique: true,
     trim: true
   },
-  user_id: {
-    type: String,
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'User',
     trim: true

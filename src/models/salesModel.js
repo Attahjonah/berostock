@@ -22,7 +22,7 @@ const saleSchema = new mongoose.Schema({
       }
     }
   ],
-  user_id: {
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true

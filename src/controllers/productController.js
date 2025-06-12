@@ -22,8 +22,8 @@ exports.createProduct = async (req, res) => {
       return res.status(400).json({ success: false, message: 'name, cost_price, quantity, and supplier are required' });
     }
 
-    const user_id = req.user?._id;
-    if (!user_id) {
+    const createdBy = req.user?._id;
+    if (!createdBy) {
       return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
 
@@ -35,7 +35,7 @@ exports.createProduct = async (req, res) => {
       image_url,
       category,
       supplier,
-      user_id,
+      createdBy,
     });
 
     logger.info(`END: Successfully created a new product`);
@@ -190,9 +190,15 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
+
+
 exports.exportProductsToCSV = async (req, res) => {
   try {
-    const products = await Product.find().lean();
+    // Populate the createdBy field to get creator details
+    const products = await Product.find()
+      .populate('createdBy', 'firstName lastName') // Assuming `createdBy` is a ref to User model
+      .lean();
+
     const isAdminOrManager = ['admin', 'manager'].includes(req.user.role);
 
     const fields = [
@@ -203,7 +209,14 @@ exports.exportProductsToCSV = async (req, res) => {
       { label: 'Selling Price', value: 'selling_price' },
       { label: 'Category', value: 'category' },
       { label: 'Supplier', value: 'supplier' },
-      { label: 'Created At', value: row => new Date(row.created_at).toLocaleString() },
+      {
+        label: 'Created By',
+        value: row => row.createdBy ? `${row.createdBy.firstName} ${row.createdBy.lastName}` : 'N/A',
+      },
+      {
+        label: 'Created At',
+        value: row => new Date(row.created_at).toLocaleString(),
+      },
     ];
 
     const parser = new Parser({ fields });
@@ -217,6 +230,34 @@ exports.exportProductsToCSV = async (req, res) => {
     res.status(500).json({ message: 'Failed to export products' });
   }
 };
+
+// exports.exportProductsToCSV = async (req, res) => {
+//   try {
+//     const products = await Product.find().lean();
+//     const isAdminOrManager = ['admin', 'manager'].includes(req.user.role);
+
+//     const fields = [
+//       { label: 'Product ID', value: 'product_id' },
+//       { label: 'Name', value: 'name' },
+//       { label: 'Quantity', value: 'quantity' },
+//       ...(isAdminOrManager ? [{ label: 'Cost Price', value: 'cost_price' }] : []),
+//       { label: 'Selling Price', value: 'selling_price' },
+//       { label: 'Category', value: 'category' },
+//       { label: 'Supplier', value: 'supplier' },
+//       { label: 'Created At', value: row => new Date(row.created_at).toLocaleString() },
+//     ];
+
+//     const parser = new Parser({ fields });
+//     const csv = parser.parse(products);
+
+//     res.header('Content-Type', 'text/csv');
+//     res.attachment('products.csv');
+//     return res.send(csv);
+//   } catch (error) {
+//     console.error('❌ CSV export error:', error);
+//     res.status(500).json({ message: 'Failed to export products' });
+//   }
+// };
 
 
 

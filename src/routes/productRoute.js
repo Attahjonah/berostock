@@ -9,31 +9,6 @@ const { productRateLimiter } = require('../middlewares/rateLimiter');
 // Applying rate-limiter middleware to product routes
 router.use(authenticate, productRateLimiter);
 
-
-
-/**
- * @swagger
- * /api/products/export:
- *   get:
- *     summary: Export products as CSV
- *     tags: [Products]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: CSV file containing products
- *         content:
- *           text/csv:
- *             schema:
- *               type: string
- *               format: binary
- *       500:
- *         description: Failed to export products
- */
-
-router.get('/export', productController.exportProductsToCSV);
-
-
 /**
  * @swagger
  * /api/products:
@@ -116,6 +91,31 @@ router.post('/', authorizeRoles('admin', 'manager'), productController.createPro
  */
 
 router.get('/',  authorizeRoles("admin", "manager", "staff"), productController.getAllProducts);
+
+
+
+/**
+ * @swagger
+ * /api/products/export:
+ *   get:
+ *     summary: Export products as CSV
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: CSV file containing products
+ *         content:
+ *           text/csv:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       500:
+ *         description: Failed to export products
+ */
+
+router.get('/export', productController.exportProductsToCSV);
+
 
 
 /**
@@ -219,5 +219,7 @@ router.put('/:id', authorizeRoles('admin', 'manager'), productController.updateP
  */
 
 router.delete('/:id', authorizeRoles('admin', 'manager'), productController.deleteProduct);
+
+
 
 module.exports = router;
