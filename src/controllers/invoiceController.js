@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Sale = require('../models/salesModel'); 
-const { generateInvoicePdf } = require('../utils/generateInvoiceUtils'); 
+const  generateInvoicePdf  = require('../utils/generateInvoiceUtils'); 
 
 exports.getInvoiceById = async (req, res) => {
   try {
