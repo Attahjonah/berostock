@@ -70,8 +70,9 @@ exports.createSale = async (req, res) => {
 
     // Return invoice PDF
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'inline; filename=invoice.pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=invoice-${sale.sale_id}.pdf`);
     await generateInvoicePdf(sale, res);
+
   } catch (error) {
     console.error("❌ Create sale error:", error);
     if (!res.headersSent) {
