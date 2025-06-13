@@ -19,7 +19,7 @@ exports.getInvoiceById = async (req, res) => {
     }
 
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename=invoice-${sale.sale_id}.pdf`);
+        res.setHeader('Content-Disposition', `inline; filename=invoice-${sale.sale_id}.pdf`);
         await generateInvoicePdf(sale, res);
     
 
