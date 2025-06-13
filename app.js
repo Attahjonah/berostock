@@ -60,7 +60,7 @@ app.use("/api-docs", swaggerServe, swaggerSetup(specs));
 app.use("/api/products", productRouter);
 app.use("/api/sales", salesRouter);
 app.use("/api/admin", adminRouter);
-app.use('/api/invoice', invoiceRouter);
+app.use('/invoice', invoiceRouter);
 
 
 
