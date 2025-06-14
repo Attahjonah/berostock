@@ -6,6 +6,8 @@ const User = require('../models/userModel')
 const { v4: uuidv4 } = require('uuid');
 
 const generateInvoicePdf = require('../utils/generateInvoiceUtils'); 
+const generateSummaryPDF = require('../utils/generateSummaryPDF');
+const moment = require('moment');
 
 
 exports.createSale = async (req, res) => {
@@ -492,3 +494,46 @@ exports.deleteSale = async (req, res) => {
   }
 };
 
+
+
+
+
+  const getSummary = async (req, res, rangeLabel, startDate, endDate) => {
+    try {
+      const sales = await Sale.find({
+        date_of_sale: {
+          $gte: startDate.toDate(),
+          $lte: endDate.toDate()
+        }
+      }).populate('products.product_id');
+
+      return generateSummaryPDF(sales, `${rangeLabel} Sales Summary`, startDate, endDate, res);
+    } catch (error) {
+      console.error(`❌ Failed to generate ${rangeLabel} sales summary:`, error);
+      res.status(500).send(`Error generating ${rangeLabel} sales summary`);
+    }
+  };
+
+  exports.getDailySummaryPDF = (req, res) => {
+    const today = moment().startOf('day');
+    const endOfDay = moment().endOf('day');
+    getSummary(req, res, 'Daily', today, endOfDay);
+  };
+
+  exports.getWeeklySummaryPDF = (req, res) => {
+    const startOfWeek = moment().startOf('isoWeek');
+    const endOfWeek = moment().endOf('isoWeek');
+    getSummary(req, res, 'Weekly', startOfWeek, endOfWeek);
+  };
+
+  exports.getMonthlySummaryPDF = (req, res) => {
+    const startOfMonth = moment().startOf('month');
+    const endOfMonth = moment().endOf('month');
+    getSummary(req, res, 'Monthly', startOfMonth, endOfMonth);
+  };
+
+  exports.getYearlySummaryPDF = (req, res) => {
+    const startOfYear = moment().startOf('year');
+    const endOfYear = moment().endOf('year');
+    getSummary(req, res, 'Yearly', startOfYear, endOfYear);
+  };

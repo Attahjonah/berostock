@@ -432,5 +432,86 @@ router.put('/:id', saleController.updateSale);
 router.delete('/:id', saleController.deleteSale);
 
 
+/**
+ * @swagger
+ * /api/sales/summary/daily:
+ *   get:
+ *     summary: Get daily sales summary
+ *     tags: [Sales]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Daily sales summary PDF
+ *         content:
+ *           application/pdf:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       403:
+ *         description: Forbidden - Admin/Manager only
+ *       500:
+ *         description: Server error
+ */
+router.get('/summary/daily', authorizeRoles('admin', 'manager'), saleController.getDailySummaryPDF);
+
+/**
+ * @swagger
+ * /api/sales/summary/weekly:
+ *   get:
+ *     summary: Get weekly sales summary
+ *     tags: [Sales]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Weekly sales summary PDF
+ *         content:
+ *           application/pdf:
+ *             schema:
+ *               type: string
+ *               format: binary
+ */
+router.get('/summary/weekly', authorizeRoles('admin', 'manager'), saleController.getWeeklySummaryPDF);
+
+/**
+ * @swagger
+ * /api/sales/summary/monthly:
+ *   get:
+ *     summary: Get monthly sales summary
+ *     tags: [Sales]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Monthly sales summary PDF
+ *         content:
+ *           application/pdf:
+ *             schema:
+ *               type: string
+ *               format: binary
+ */
+router.get('/summary/monthly', authorizeRoles('admin', 'manager'), saleController.getMonthlySummaryPDF);
+
+/**
+ * @swagger
+ * /api/sales/summary/yearly:
+ *   get:
+ *     summary: Get yearly sales summary
+ *     tags: [Sales]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Yearly sales summary PDF
+ *         content:
+ *           application/pdf:
+ *             schema:
+ *               type: string
+ *               format: binary
+ */
+router.get('/summary/yearly', authorizeRoles('admin', 'manager'), saleController.getYearlySummaryPDF);
+
+
 
 module.exports = router;
