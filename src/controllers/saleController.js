@@ -498,42 +498,99 @@ exports.deleteSale = async (req, res) => {
 
 
 
-  const getSummary = async (req, res, rangeLabel, startDate, endDate) => {
-    try {
-      const sales = await Sale.find({
-        date_of_sale: {
-          $gte: startDate.toDate(),
-          $lte: endDate.toDate()
-        }
-      }).populate('products.product_id');
+// Reusable function to generate summary
+const getSummary = async (req, res, title, startDate, endDate) => {
+  try {
+    // const userRole = req.user.role;
 
-      return generateSummaryPDF(sales, `${rangeLabel} Sales Summary`, startDate, endDate, res);
-    } catch (error) {
-      console.error(`❌ Failed to generate ${rangeLabel} sales summary:`, error);
-      res.status(500).send(`Error generating ${rangeLabel} sales summary`);
-    }
-  };
+    // if (userRole !== 'admin' && userRole !== 'manager') {
+    //   return res.status(403).json({ error: 'Access denied' });
+    // }
 
-  exports.getDailySummaryPDF = (req, res) => {
-    const today = moment().startOf('day');
-    const endOfDay = moment().endOf('day');
-    getSummary(req, res, 'Daily', today, endOfDay);
-  };
+    const sales = await Sale.find({
+      date_of_sale: {
+        $gte: startDate.toDate(),
+        $lte: endDate.toDate()
+      }
+    })
+    .populate('products.product_id')
+    .lean();
 
-  exports.getWeeklySummaryPDF = (req, res) => {
-    const startOfWeek = moment().startOf('isoWeek');
-    const endOfWeek = moment().endOf('isoWeek');
-    getSummary(req, res, 'Weekly', startOfWeek, endOfWeek);
-  };
+    // ✅ Set headers to allow browser viewing
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename="${title.toLowerCase()}-summary.pdf"`);
 
-  exports.getMonthlySummaryPDF = (req, res) => {
-    const startOfMonth = moment().startOf('month');
-    const endOfMonth = moment().endOf('month');
-    getSummary(req, res, 'Monthly', startOfMonth, endOfMonth);
-  };
+    await generateSummaryPDF(sales, `${title} Sales Summary`, startDate, endDate, res);
+    // `generateSummaryPDF` will handle piping and ending response
 
-  exports.getYearlySummaryPDF = (req, res) => {
-    const startOfYear = moment().startOf('year');
-    const endOfYear = moment().endOf('year');
-    getSummary(req, res, 'Yearly', startOfYear, endOfYear);
-  };
+  } catch (err) {
+    console.error('❌ Error generating summary PDF:', err);
+    res.status(500).json({ error: 'Failed to generate summary PDF' });
+  }
+};
+
+exports.getDailySummaryPDF = (req, res) => {
+  const today = moment().startOf('day');
+  const endOfDay = moment().endOf('day');
+  getSummary(req, res, 'Daily', today, endOfDay);
+};
+
+exports.getWeeklySummaryPDF = (req, res) => {
+  const startOfWeek = moment().startOf('isoWeek');
+  const endOfWeek = moment().endOf('isoWeek');
+  getSummary(req, res, 'Weekly', startOfWeek, endOfWeek);
+};
+
+exports.getMonthlySummaryPDF = (req, res) => {
+  const startOfMonth = moment().startOf('month');
+  const endOfMonth = moment().endOf('month');
+  getSummary(req, res, 'Monthly', startOfMonth, endOfMonth);
+};
+
+exports.getYearlySummaryPDF = (req, res) => {
+  const startOfYear = moment().startOf('year');
+  const endOfYear = moment().endOf('year');
+  getSummary(req, res, 'Yearly', startOfYear, endOfYear);
+};
+
+
+
+  // const getSummary = async (req, res, rangeLabel, startDate, endDate) => {
+  //   try {
+  //     const sales = await Sale.find({
+  //       date_of_sale: {
+  //         $gte: startDate.toDate(),
+  //         $lte: endDate.toDate()
+  //       }
+  //     }).populate('products.product_id');
+
+  //     return generateSummaryPDF(sales, `${rangeLabel} Sales Summary`, startDate, endDate, res);
+  //   } catch (error) {
+  //     console.error(`❌ Failed to generate ${rangeLabel} sales summary:`, error);
+  //     res.status(500).send(`Error generating ${rangeLabel} sales summary`);
+  //   }
+  // };
+
+  // exports.getDailySummaryPDF = (req, res) => {
+  //   const today = moment().startOf('day');
+  //   const endOfDay = moment().endOf('day');
+  //   getSummary(req, res, 'Daily', today, endOfDay);
+  // };
+
+  // exports.getWeeklySummaryPDF = (req, res) => {
+  //   const startOfWeek = moment().startOf('isoWeek');
+  //   const endOfWeek = moment().endOf('isoWeek');
+  //   getSummary(req, res, 'Weekly', startOfWeek, endOfWeek);
+  // };
+
+  // exports.getMonthlySummaryPDF = (req, res) => {
+  //   const startOfMonth = moment().startOf('month');
+  //   const endOfMonth = moment().endOf('month');
+  //   getSummary(req, res, 'Monthly', startOfMonth, endOfMonth);
+  // };
+
+  // exports.getYearlySummaryPDF = (req, res) => {
+  //   const startOfYear = moment().startOf('year');
+  //   const endOfYear = moment().endOf('year');
+  //   getSummary(req, res, 'Yearly', startOfYear, endOfYear);
+  // };
