@@ -801,3 +801,11 @@
 [36m[1m2025-06-25 13:20:29 info END: Successfully fetched all products[22m[39m
 [36m[1m2025-06-25 13:23:23 info START: Attempting to log in a user[22m[39m
 [36m[1m2025-06-25 13:23:23 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 16:51:04 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 16:51:05 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 16:53:26 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 16:53:26 info SUCCESS: User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 16:55:11 info START: Fetching all products[22m[39m
+[36m[1m2025-06-25 16:55:11 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-06-25 16:56:14 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 16:56:15 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
