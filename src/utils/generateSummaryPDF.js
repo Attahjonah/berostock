@@ -13,6 +13,10 @@ const COMPANY = {
 };
 
 module.exports = async function generateSummaryPDF(sales, title, startDate, endDate, res) {
+  // ✅ Set headers
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', 'inline; filename=summary.pdf');
+
   const doc = new PDFDocument({ size: 'A4', margin: 50 });
 
   doc.on('error', err => {
@@ -22,10 +26,11 @@ module.exports = async function generateSummaryPDF(sales, title, startDate, endD
 
   doc.pipe(res);
 
-  // Header: Logo + Company Info
+  // ✅ Header: Logo + Company Info
   try {
     const logo = await axios.get(COMPANY.logoUrl, { responseType: 'arraybuffer' });
-    doc.image(logo.data, 50, 40, { width: 80 });
+    const logoBuffer = Buffer.from(logo.data, 'binary');
+    doc.image(logoBuffer, 50, 40, { width: 80 });
   } catch (e) {
     console.warn('⚠️ Failed to load logo:', e.message);
   }
@@ -62,9 +67,6 @@ module.exports = async function generateSummaryPDF(sales, title, startDate, endD
     const amount = parseFloat(sale.total_price) || 0;
     const profit = parseFloat(sale.profit_made) || 0;
 
-    // Debug: Uncomment to inspect raw values
-    // console.log(`🧾 Sale: ${sale.sale_id}, Total: ${amount}, Profit: ${profit}`);
-
     totalSales += amount;
     totalProfit += profit;
 
@@ -91,12 +93,6 @@ module.exports = async function generateSummaryPDF(sales, title, startDate, endD
   doc
     .text('Total Profit:', 350, y, { width: 90, align: 'right' })
     .text(`${totalProfit.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, 450, y, { width: 90, align: 'right' });
-
-  y += 30;
-
-//   const amountWords = writtenNumber(Math.floor(totalSales)).replace(/ hundred (?=[a-z])/i, ' hundred and ');
-//   doc.font('Helvetica').fontSize(9)
-//     .text(`Amount in words: ${amountWords} naira only`, 50, y);
 
   doc.end();
 };

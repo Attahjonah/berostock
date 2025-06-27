@@ -1,25 +1,33 @@
-const express = require("express")
-const router = express.Router()
-const { signup } = require("../controllers/authControllers/signup.controller")
-const { login }= require("../controllers/authControllers/login.controller")
-const { logout } = require("../controllers/authControllers/logout.controller")
-const { verifyEmail }= require("../controllers/authControllers/verifyEmail.controller")
-const verifyToken = require("../middlewares/authMiddleware")
-const { changePassword } = require("../controllers/authControllers/changePassword.controller")
-const { forgotPassword } = require("../controllers/authControllers/forgotPassword")
-const { resetPassword } = require("../controllers/authControllers/resetPassword")
-const  refreshTokenController  = require("../controllers/authControllers/refreshTokenController");
+const express = require("express");
+const router = express.Router();
+const { createUser } = require("../controllers/authControllers/createUser");
+const { login } = require("../controllers/authControllers/login.controller");
+const { logout } = require("../controllers/authControllers/logout.controller");
+const verifyToken = require("../middlewares/authMiddleware");
+const {
+  changePassword,
+} = require("../controllers/authControllers/changePassword.controller");
+const {
+  forgotPassword,
+} = require("../controllers/authControllers/forgotPassword");
+const {
+  resetPassword,
+} = require("../controllers/authControllers/resetPassword");
+const refreshTokenController = require("../controllers/authControllers/refreshTokenController");
+const {
+  updateUserRole,
+} = require("../controllers/authControllers/updateUserRoleController");
 const checkBlacklistedToken = require("../middlewares/checkBlacklistMiddleware");
+const authMiddleware = require("../middlewares/authMiddleware"); // Sets req.user
+const isAdmin = require("../middlewares/isAdmin");
 
-const { 
-        loginRateLimiter, 
-        signupRateLimiter, 
-        changePasswordRateLimiter, 
-        forgotPasswordLimiter, 
-        resetPasswordLimiter 
-    } = require("../middlewares/rateLimiter")
-
-
+const {
+  loginRateLimiter,
+  createUserRateLimiter,
+  changePasswordRateLimiter,
+  forgotPasswordLimiter,
+  resetPasswordLimiter,
+} = require("../middlewares/rateLimiter");
 
 /**
  * @swagger
@@ -28,15 +36,16 @@ const {
  *   description: Authentication and authorization routes
  */
 
-
-
-
 /**
  * @swagger
- * /api/v1/auth/signup:
+ * /api/v1/auth/create-user:
  *   post:
- *     summary: Register a new user
- *     tags: [Auth]
+ *     summary: Create a new user (admin only)
+ *     description: Creates a new user (admin, manager, or staff). A secure password is generated and emailed to the user.
+ *     tags:
+ *       - Users
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -47,7 +56,7 @@ const {
  *               - firstName
  *               - lastName
  *               - email
- *               - password
+ *               - role
  *             properties:
  *               firstName:
  *                 type: string
@@ -59,38 +68,134 @@ const {
  *                 type: string
  *                 format: email
  *                 example: johndoe@example.com
- *               password:
+ *               role:
  *                 type: string
- *                 format: password
- *                 example: Password@123
+ *                 enum: [admin, manager, staff]
+ *                 example: staff
  *     responses:
  *       201:
- *         description: User registered successfully
+ *         description: User successfully created and credentials emailed
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
  *                 message:
  *                   type: string
- *                   example: User registered successfully.
+ *                   example: User created and login credentials sent to email.
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: 64a01a2e9c9f1e0035b0e781
+ *                     email:
+ *                       type: string
+ *                       example: johndoe@example.com
+ *                     firstName:
+ *                       type: string
+ *                       example: John
+ *                     lastName:
+ *                       type: string
+ *                       example: Doe
+ *                     role:
+ *                       type: string
+ *                       example: staff
  *       400:
- *         description: Missing fields, invalid input, or email already registered
+ *         description: Missing or invalid fields
+ *       409:
+ *         description: Email already in use
  *       500:
  *         description: Internal server error
  */
-router.post("/signup", signupRateLimiter, signup)
 
+router.post(
+  "/create-user",
+  createUserRateLimiter,
+  authMiddleware,
+  isAdmin,
+  createUser
+);
+
+
+/**
+ * @swagger
+ * /api/v1/auth/users/{id}:
+ *   patch:
+ *     summary: Update a user's role (admin only)
+ *     description: Allows an admin to change the role of a user to admin, manager, or staff.
+ *     tags:
+ *       - Users
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user whose role is to be updated
+ *         schema:
+ *           type: string
+ *           example: 64a01a2e9c9f1e0035b0e781
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - role
+ *             properties:
+ *               role:
+ *                 type: string
+ *                 enum: [admin, manager, staff]
+ *                 example: manager
+ *     responses:
+ *       200:
+ *         description: User role updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User role updated to manager succesfully.
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: 64a01a2e9c9f1e0035b0e781
+ *                     email:
+ *                       type: string
+ *                       example: johndoe@example.com
+ *                     firstName:
+ *                       type: string
+ *                       example: John
+ *                     lastName:
+ *                       type: string
+ *                       example: Doe
+ *                     role:
+ *                       type: string
+ *                       example: manager
+ *       400:
+ *         description: Invalid role provided
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+
+router.patch("/users/:id", authMiddleware, isAdmin, updateUserRole);
 
 /**
  * @swagger
  * /api/v1/auth/login:
  *   post:
- *     summary: Login a user
- *     tags: [Auth]
+ *     summary: Log in a user
+ *     description: Authenticates a user using email and password, then returns JWT access and refresh tokens.
+ *     tags:
+ *       - Auth
  *     requestBody:
  *       required: true
  *       content:
@@ -107,8 +212,7 @@ router.post("/signup", signupRateLimiter, signup)
  *                 example: johndoe@example.com
  *               password:
  *                 type: string
- *                 format: password
- *                 example: Password@123
+ *                 example: examplePassword123!
  *     responses:
  *       200:
  *         description: Login successful
@@ -122,23 +226,25 @@ router.post("/signup", signupRateLimiter, signup)
  *                   example: Login successful
  *                 accessToken:
  *                   type: string
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *                 refreshToken:
  *                   type: string
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *                 user:
  *                   type: object
  *                   properties:
  *                     id:
  *                       type: string
- *                       example: 665ab1235fcdeab678abc123
+ *                       example: 64a01a2e9c9f1e0035b0e781
+ *                     email:
+ *                       type: string
+ *                       example: johndoe@example.com
  *                     firstName:
  *                       type: string
  *                       example: John
  *                     lastName:
  *                       type: string
  *                       example: Doe
- *                     email:
- *                       type: string
- *                       example: johndoe@example.com
  *                     role:
  *                       type: string
  *                       example: staff
@@ -146,20 +252,18 @@ router.post("/signup", signupRateLimiter, signup)
  *                       type: boolean
  *                       example: true
  *       400:
- *         description: Missing email or password
+ *         description: Email and password are required
  *       401:
- *         description: Invalid credentials or user not found
+ *         description: Invalid credentials or user does not exist
  *       403:
- *         description: Email not verified
+ *         description: Account is not verified
  *       500:
  *         description: Internal server error
  */
-router.post("/login", loginRateLimiter, login)
 
-
+router.post("/login", loginRateLimiter, login);
 
 //router.post("/verify-email", verifyEmail)
-
 
 /**
  * @swagger
@@ -243,8 +347,12 @@ router.post("/login", loginRateLimiter, login)
  *                   example: Internal server error.
  */
 
-router.patch("/change-password", verifyToken, changePasswordRateLimiter, changePassword)
-
+router.patch(
+  "/change-password",
+  verifyToken,
+  changePasswordRateLimiter,
+  changePassword
+);
 
 /**
  * @swagger
@@ -289,8 +397,7 @@ router.patch("/change-password", verifyToken, changePasswordRateLimiter, changeP
  *                   example: Internal server error.
  */
 
-router.post("/forgot-password", forgotPasswordLimiter, forgotPassword)
-
+router.post("/forgot-password", forgotPasswordLimiter, forgotPassword);
 
 /**
  * @swagger
@@ -357,8 +464,7 @@ router.post("/forgot-password", forgotPasswordLimiter, forgotPassword)
  *                   example: Internal server error.
  */
 
-router.post("/reset-password", resetPasswordLimiter, resetPassword)
-
+router.post("/reset-password", resetPasswordLimiter, resetPassword);
 
 /**
  * @swagger
@@ -414,9 +520,7 @@ router.post("/reset-password", resetPasswordLimiter, resetPassword)
  *                   example: Internal server error.
  */
 
-router.post("/logout", verifyToken, logout)
-
-
+router.post("/logout", verifyToken, logout);
 
 /**
  * @swagger
@@ -468,8 +572,10 @@ router.post("/logout", verifyToken, logout)
  *         description: Internal server error
  */
 
-router.post("/refresh-token", checkBlacklistedToken, refreshTokenController.refreshToken);
+router.post(
+  "/refresh-token",
+  checkBlacklistedToken,
+  refreshTokenController.refreshToken
+);
 
-
-
-module.exports = router
+module.exports = router;

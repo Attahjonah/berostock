@@ -498,15 +498,8 @@ exports.deleteSale = async (req, res) => {
 
 
 
-// Reusable function to generate summary
 const getSummary = async (req, res, title, startDate, endDate) => {
   try {
-    // const userRole = req.user.role;
-
-    // if (userRole !== 'admin' && userRole !== 'manager') {
-    //   return res.status(403).json({ error: 'Access denied' });
-    // }
-
     const sales = await Sale.find({
       date_of_sale: {
         $gte: startDate.toDate(),
@@ -516,16 +509,14 @@ const getSummary = async (req, res, title, startDate, endDate) => {
     .populate('products.product_id')
     .lean();
 
-    // ✅ Set headers to allow browser viewing
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `inline; filename="${title.toLowerCase()}-summary.pdf"`);
-
+    // ✅ Let generateSummaryPDF handle headers and piping
     await generateSummaryPDF(sales, `${title} Sales Summary`, startDate, endDate, res);
-    // `generateSummaryPDF` will handle piping and ending response
 
   } catch (err) {
     console.error('❌ Error generating summary PDF:', err);
-    res.status(500).json({ error: 'Failed to generate summary PDF' });
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Failed to generate summary PDF' });
+    }
   }
 };
 
@@ -552,6 +543,8 @@ exports.getYearlySummaryPDF = (req, res) => {
   const endOfYear = moment().endOf('year');
   getSummary(req, res, 'Yearly', startOfYear, endOfYear);
 };
+
+
 
 
 

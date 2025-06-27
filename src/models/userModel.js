@@ -1,15 +1,18 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
       required: true,
+      trim: true,
     },
 
     lastName: {
       type: String,
       required: true,
+      trim: true,
     },
 
     email: {
@@ -23,22 +26,19 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      select: false,
+      select: false, // prevent password from being returned in queries
     },
 
     role: {
       type: String,
-      enum: ["admin", "manager", "staff"],
-      default: "staff", // default for public registrations
+      enum: [ "admin", "manager", "staff"],
+      default: "staff",
     },
 
     isVerified: {
       type: Boolean,
-      default: true,
+      default: true, // manually verified since admin creates users
     },
-
-    // verificationCode: String,
-    // verificationCodeExpires: Date,
 
     resetPasswordCode: String,
     resetPasswordCodeExpires: Date,
@@ -48,56 +48,19 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+
+// Hash password before saving
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+
+//  Password comparison method
+userSchema.methods.comparePassword = async function (inputPassword) {
+  return bcrypt.compare(inputPassword, this.password);
+};
+
 module.exports = mongoose.model("User", userSchema);
-
-
-
-
-// const mongoose = require("mongoose")
-
-// const userSchema = new mongoose.Schema({
-//     firstName: {
-//         type: String,
-//         required: true
-//     },
-
-//     lastName: {
-//         type: String,
-//         required: true
-//     },
-
-//     email: {
-//         type: String,
-//         required: true,
-//         unique: true,
-//         lowercase: true,
-//         trim: true
-//     }, 
-
-//     password: {
-//         type: String,
-//         required: true,
-//         select: false
-//     },
-//     role: {
-//         type: String,
-//         required: true,
-//         enum :["admin", "manager", "staff"]
-//     },
-
-//     isVerified: {
-//         type: Boolean,
-//         default: false,
-//       },
-//       verificationCode: String,
-//       verificationCodeExpires: Date, 
-//       resetPasswordCode: String,
-//       resetPasswordCodeExpires: Date, 
-     
-// },
-
-// {
-//     timestamps: true
-// })
-
-// module.exports = mongoose.model("User", userSchema)

@@ -35,7 +35,7 @@ exports.changePassword = async (req, res) => {
       return res.status(401).json({ message: "Current password is incorrect." });
     }
 
-    user.password = await hashPassword(new_password);
+    user.password = await (new_password);
     await user.save();
 
     await sendSecurityAlertEmail(user.email); 

@@ -13,7 +13,7 @@ const loginRateLimiter = rateLimit({
 });
 
 // Signup: limit to 3 requests per hour
-const signupRateLimiter = rateLimit({
+const createUserRateLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 3,
   message: {
@@ -84,7 +84,7 @@ const saleRateLimiter = rateLimit({
 
 module.exports = {
   loginRateLimiter,
-  signupRateLimiter,
+  createUserRateLimiter,
   resetRateLimiter,
   changePasswordRateLimiter,
   forgotPasswordLimiter,

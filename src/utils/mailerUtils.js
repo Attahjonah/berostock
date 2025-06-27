@@ -76,7 +76,27 @@ const sendSecurityAlertEmail = async (email) => {
   });
 };
 
-module.exports = { sendResetEmail, sendVerificationEmail, sendSecurityAlertEmail };
+
+const sendLoginCredentials = async (email, password, fullName) => {
+  const mailOptions = {
+    from: `"Bennyrose Inventory" <${process.env.GMAIL_USER}>`,
+    to: email,
+    subject: "Your Login Credentials",
+    html: `
+      <p>Hi ${fullName},</p>
+      <p>Your account has been created on the Bennyrose Inventory system.</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Password:</strong> ${password}</p>
+      <p>Use this to log in at: <a href="http://berostock.onrender.com/login">Login Page</a></p>
+      <p>Please change your password after logging in.</p>
+      <p>Regards,<br/>Bennyrose Admin Team</p>
+    `,
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+
+module.exports = { sendResetEmail, sendVerificationEmail, sendSecurityAlertEmail, sendLoginCredentials };
 
 
 

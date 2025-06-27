@@ -39,7 +39,7 @@ exports.resetPassword = async (req, res) => {
       return res.status(400).json({ message: "Invalid or expired code." });
     }
 
-    user.password = await hashPassword(new_password);
+    user.password = await (new_password);
     user.resetPasswordCode = undefined;
     user.resetPasswordCodeExpires = undefined;
 

@@ -677,3 +677,127 @@
 [36m[1m2025-06-15 00:32:31 info User logged in: attahjonah93@gmail.com[22m[39m
 [36m[1m2025-06-16 12:23:30 info START: Attempting to log in a user[22m[39m
 [36m[1m2025-06-16 12:23:31 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-16 13:13:00 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-16 13:13:00 info User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 01:38:22 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 01:38:23 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 01:57:23 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 01:57:25 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 01:57:26 info END: Forgot password code sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 02:04:01 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 02:04:01 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 02:19:54 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 02:19:55 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 02:34:17 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 02:34:17 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 02:34:45 info Admin attahjonah93@gmail.com changed role of devsouza93@gmail.com from manager to staff[22m[39m
+[36m[1m2025-06-25 02:56:13 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 02:56:13 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 03:00:01 info Admin attahjonah93@gmail.com changed role of devsouza93@gmail.com from staff to admin[22m[39m
+[36m[1m2025-06-25 03:21:52 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 03:21:52 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 03:25:38 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 03:25:39 info SUCCESS: User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 03:57:29 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 03:57:32 info SUCCESS: User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 03:59:04 info START: Attempting to change password for user: 685b5d630f1f160f96bd358b[22m[39m
+[36m[1m2025-06-25 03:59:08 info END: Password changed successfully for user: 685b5d630f1f160f96bd358b[22m[39m
+[36m[1m2025-06-25 03:59:40 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 03:59:42 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 03:59:42 info END: Forgot password code sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 04:01:11 info START: Reset password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 04:01:12 info END: Password reset successful for user: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 04:02:37 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 04:02:45 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 04:03:28 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 04:04:43 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 04:05:23 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 04:10:30 info START: Attempting to log in a user[22m[39m
+[31m[1m2025-06-25 04:10:33 error Login error: read ECONNRESET[22m[39m
+[36m[1m2025-06-25 04:28:01 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 04:28:23 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 04:28:32 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 04:29:06 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 04:29:14 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 04:29:37 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 04:29:39 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 04:29:40 info END: Forgot password code sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 04:32:59 info START: Reset password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 04:33:00 info END: Password reset successful for user: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:12:25 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:12:29 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:12:29 info END: Forgot password code sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:13:15 info START: Reset password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:13:16 info END: Password reset successful for user: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:14:03 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:18:11 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:18:12 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:20:49 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:20:49 info SUCCESS: User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:21:34 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:21:37 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:21:38 info END: Forgot password code sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:22:27 info START: Reset password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:22:28 info END: Password reset successful for user: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:22:57 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:23:12 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:33:57 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:33:59 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:33:59 info END: Forgot password code sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:35:01 info START: Reset password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:35:01 info END: Password reset successful for user: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:35:28 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:35:29 info SUCCESS: User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:39:03 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:39:03 info SUCCESS: User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:39:54 info START: Attempting to change password for user: 685bdb3af8e50f7b68cf993e[22m[39m
+[36m[1m2025-06-25 12:39:57 info END: Password changed successfully for user: 685bdb3af8e50f7b68cf993e[22m[39m
+[36m[1m2025-06-25 12:40:20 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:42:55 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:42:56 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:44:44 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:44:44 info SUCCESS: User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:45:46 info START: Attempting to change password for user: 685be0e22522126fda1b62e6[22m[39m
+[36m[1m2025-06-25 12:45:48 info END: Password changed successfully for user: 685be0e22522126fda1b62e6[22m[39m
+[36m[1m2025-06-25 12:46:10 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:46:10 info SUCCESS: User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:48:23 info Refresh token blacklisted successfully[22m[39m
+[36m[1m2025-06-25 12:54:35 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:54:35 info SUCCESS: User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:56:39 info START: Attempting to change password for user: 685be0e22522126fda1b62e6[22m[39m
+[36m[1m2025-06-25 12:56:44 info END: Password changed successfully for user: 685be0e22522126fda1b62e6[22m[39m
+[36m[1m2025-06-25 12:57:47 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 12:57:47 info SUCCESS: User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:59:21 info START: Forgot password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:59:24 info Verification code email sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 12:59:25 info END: Forgot password code sent to devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 13:01:12 info START: Reset password request for devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 13:01:12 info END: Password reset successful for user: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 13:02:05 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 13:02:05 info SUCCESS: User logged in: devsouza93@gmail.com[22m[39m
+[36m[1m2025-06-25 13:06:31 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 13:06:31 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 13:09:15 info Admin attahjonah93@gmail.com changed role of johndoe@example.com from staff to manager[22m[39m
+[36m[1m2025-06-25 13:10:28 info Refresh token blacklisted successfully[22m[39m
+[36m[1m2025-06-25 13:12:24 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 13:12:24 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
+[36m[1m2025-06-25 13:15:18 info START: Attempting to create a new product[22m[39m
+[31m[1m2025-06-25 13:15:18 error ERROR: Product validation failed: supplier: `Fouani Nig. Ltd` is not a valid enum value for path `supplier`.[22m[39m
+[36m[1m2025-06-25 13:15:33 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-06-25 13:15:33 info END: Successfully created a new product[22m[39m
+[36m[1m2025-06-25 13:16:33 info START: Attempting to create a new product[22m[39m
+[36m[1m2025-06-25 13:16:33 info END: Successfully created a new product[22m[39m
+[36m[1m2025-06-25 13:17:30 info START: Fetching all products[22m[39m
+[36m[1m2025-06-25 13:17:30 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-06-25 13:17:42 info START: Fetching all products[22m[39m
+[36m[1m2025-06-25 13:17:42 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-06-25 13:18:09 info START: Fetching product with ID 685be8a12522126fda1b6307[22m[39m
+[36m[1m2025-06-25 13:18:09 info END: Successfully fetched product with ID 685be8a12522126fda1b6307[22m[39m
+[36m[1m2025-06-25 13:19:45 info START: Updating product with ID 685be8a12522126fda1b6307[22m[39m
+[36m[1m2025-06-25 13:19:45 info END: Successfully updated product with ID 685be8a12522126fda1b6307[22m[39m
+[36m[1m2025-06-25 13:20:12 info START: Deleting product with ID 685be8a12522126fda1b6307[22m[39m
+[36m[1m2025-06-25 13:20:12 info END: Successfully deleted product with ID 685be8a12522126fda1b6307[22m[39m
+[36m[1m2025-06-25 13:20:29 info START: Fetching all products[22m[39m
+[36m[1m2025-06-25 13:20:29 info END: Successfully fetched all products[22m[39m
+[36m[1m2025-06-25 13:23:23 info START: Attempting to log in a user[22m[39m
+[36m[1m2025-06-25 13:23:23 info SUCCESS: User logged in: attahjonah93@gmail.com[22m[39m
