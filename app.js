@@ -14,6 +14,7 @@ const productRouter = require("./src/routes/productRoute");
 const salesRouter = require("./src/routes/saleRoute");
 //const adminRouter = require("./src/routes/adminRoute")
 const invoiceRouter = require("./src/routes/invoiceRoute");
+const clientRouter = require("./src/routes/clientRoute");
 
 const { API_VERSION, SESSION_SECRET } = process.env;
 const app = express();
@@ -61,6 +62,8 @@ app.use("/api/products", productRouter);
 app.use("/api/sales", salesRouter);
 //app.use("/api/admin", adminRouter);
 app.use('/invoice', invoiceRouter);
+app.use("/api/clients", clientRouter);
+
 
 
 
