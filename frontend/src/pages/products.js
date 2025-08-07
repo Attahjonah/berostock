@@ -182,7 +182,7 @@ const Products = () => {
             <option value="">Select Supplier</option>
             <option value="Fouani">Fouani</option>
             <option value="Somotex">Somotex</option>
-            <option value="Guandzou China">Guandzou China</option>
+            <option value="Guangzhou China">Guandzou China</option>
           </select>
           <div className="form-buttons">
             <button type="submit" className="submit-btn">
