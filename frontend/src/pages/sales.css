@@ -1,0 +1,125 @@
+.sales-page {
+  padding: 2rem;
+}
+
+.sales-controls {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.sales-controls input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 250px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.icon-btn.delete {
+  color: #dc2626;
+}
+
+.icon-btn:hover {
+  opacity: 0.8;
+}
+
+.sales-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.sales-table th,
+.sales-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.sales-table thead {
+  background-color: #1e3a8a;
+  color: #fff;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pagination-controls button {
+  padding: 8px 12px;
+  background: #1e3a8a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.spinner {
+  font-weight: bold;
+  color: #1e3a8a;
+  padding: 1rem;
+}
+
+/* ✍️ Optional: sales form styling if applicable */
+.sales-form {
+  background: #f9f9f9;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sales-form input,
+.sales-form textarea,
+.sales-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.sales-form textarea {
+  resize: vertical;
+}
+
+.sales-form .form-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.sales-form .submit-btn {
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sales-form .cancel-btn {
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}

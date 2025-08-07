@@ -1,0 +1,60 @@
+.report-page {
+  padding: 2rem;
+}
+
+.report-page h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.report-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.report-buttons button {
+  padding: 0.75rem 1.5rem;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.report-buttons button:hover {
+  background-color: #005fa3;
+}
+
+
+.custom-report {
+  margin-top: 2rem;
+}
+
+.custom-report label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: bold;
+}
+
+.custom-report input[type="date"] {
+  margin-left: 1rem;
+  padding: 0.4rem;
+  font-size: 1rem;
+}
+
+.custom-report button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #228822;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.custom-report button:hover {
+  background-color: #196619;
+}

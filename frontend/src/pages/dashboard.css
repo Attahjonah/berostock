@@ -1,0 +1,317 @@
+
+
+.dashboard {
+  color: #111827;
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.dashboard h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.63);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card p {
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.card h3 {
+  font-size: 2rem;
+  color: #1e3a8a;
+}
+
+.quick-actions h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.actions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.actions-container button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.actions-container button:hover {
+  background-color: #2563eb;
+}
+
+/* ✅ Responsive Breakpoints */
+
+/* Small Devices (Phones) */
+@media (max-width: 576px) {
+  .dashboard h2 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .card h3 {
+    font-size: 1.4rem;
+  }
+
+  .card p {
+    font-size: 0.9rem;
+  }
+
+  .actions-container button {
+    font-size: 0.9rem;
+    width: 100%;
+  }
+}
+
+/* Tablets */
+@media (min-width: 577px) and (max-width: 768px) {
+  .card-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .card h3 {
+    font-size: 1.7rem;
+  }
+}
+
+/* Large Desktops */
+@media (min-width: 1200px) {
+  .dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .card-container {
+    gap: 30px;
+  }
+
+  .card {
+    padding: 2rem;
+  }
+}
+
+
+
+
+
+
+.dashboard {
+  color: #111827;
+}
+
+.dashboard h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.63);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card p {
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.card h3 {
+  font-size: 2rem;
+  color: #1e3a8a;
+}
+
+.quick-actions h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.actions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.actions-container button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.actions-container button:hover {
+  background-color: #2563eb;
+}
+
+
+
+
+
+
+
+
+.dashboard {
+  color: #111827;
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.dashboard h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.63);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card p {
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.card h3 {
+  font-size: 2rem;
+  color: #1e3a8a;
+}
+
+.quick-actions h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.actions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.actions-container button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.actions-container button:hover {
+  background-color: #2563eb;
+}
+
+/* ✅ Responsive Breakpoints */
+
+/* Small Devices (Phones) */
+@media (max-width: 576px) {
+  .dashboard h2 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .card h3 {
+    font-size: 1.4rem;
+  }
+
+  .card p {
+    font-size: 0.9rem;
+  }
+
+  .actions-container button {
+    font-size: 0.9rem;
+    width: 100%;
+  }
+}
+
+/* Tablets */
+@media (min-width: 577px) and (max-width: 768px) {
+  .card-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .card h3 {
+    font-size: 1.7rem;
+  }
+}
+
+/* Large Desktops */
+@media (min-width: 1200px) {
+  .dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .card-container {
+    gap: 30px;
+  }
+
+  .card {
+    padding: 2rem;
+  }
+}
