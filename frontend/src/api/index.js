@@ -16,28 +16,28 @@ const API = axios.create({ baseURL: `${base}/api` });
 });
 
 // Token Refreshing State
-let isRefreshing = false;
-let refreshSubscribers = [];
+// let isRefreshing = false;
+// let refreshSubscribers = [];
 
-const onTokenRefreshed = (newToken) => {
-  refreshSubscribers.forEach((cb) => cb(newToken));
-  refreshSubscribers = [];
-};
+// const onTokenRefreshed = (newToken) => {
+//   refreshSubscribers.forEach((cb) => cb(newToken));
+//   refreshSubscribers = [];
+// };
 
-const addRefreshSubscriber = (cb) => {
-  refreshSubscribers.push(cb);
-};
+// const addRefreshSubscriber = (cb) => {
+//   refreshSubscribers.push(cb);
+// };
 
-// Function to refresh access token
-const refreshToken = async () => {
-  const refreshToken = localStorage.getItem("refreshToken");
-  if (!refreshToken) throw new Error("Refresh token not found");
+// // Function to refresh access token
+// const refreshToken = async () => {
+//   const refreshToken = localStorage.getItem("refreshToken");
+//   if (!refreshToken) throw new Error("Refresh token not found");
 
-  const res = await AuthAPI.post("/auth/refresh-token", { refreshToken });
-  const newAccessToken = res.data.accessToken;
-  localStorage.setItem("token", newAccessToken);
-  return newAccessToken;
-};
+//   const res = await AuthAPI.post("/auth/refresh-token", { refreshToken });
+//   const newAccessToken = res.data.accessToken;
+//   localStorage.setItem("token", newAccessToken);
+//   return newAccessToken;
+// };
 
 // Setup interceptors globally
 export const setupInterceptors = (setSessionExpired) => {

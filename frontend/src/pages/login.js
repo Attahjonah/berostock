@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthAPI } from "../api";
 
 const Login = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  //const location = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
