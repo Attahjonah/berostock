@@ -22,7 +22,7 @@ exports.createSale = async (req, res) => {
     if (new Set(ids).size !== ids.length) {
       return res.status(400).json({ message: 'Duplicate products are not allowed in a sale' });
     }
-    if (!['POS', 'Transfer', 'Cash'].includes(mode_of_payment)) {
+    if (!['Card', 'Transfer', 'Cash'].includes(mode_of_payment)) {
       return res.status(400).json({ message: 'Invalid mode of payment' });
     }
 
@@ -67,13 +67,18 @@ exports.createSale = async (req, res) => {
       customer_name,
       total_price: +total_price.toFixed(2),
       profit_made: +total_profit.toFixed(2),
-      mode_of_payment
+      mode_of_payment,
     });
 
+    // ✅ Return invoice URL instead of streaming PDF
+    const invoice_url = `https://berostock.onrender.com/invoice/${sale.sale_id}`;
+    return res.status(201).json({ message: "Sale created", invoice_url });
+ 
+
     // Return invoice PDF
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename=invoice-${sale.sale_id}.pdf`);
-    await generateInvoicePdf(sale, res);
+    // res.setHeader('Content-Type', 'application/pdf');
+    // res.setHeader('Content-Disposition', `attachment; filename=invoice-${sale.sale_id}.pdf`);
+    // await generateInvoicePdf(sale, res);
 
   } catch (error) {
     console.error("❌ Create sale error:", error);
@@ -124,8 +129,14 @@ exports.getAllSales = async (req, res) => {
       const productIds = await Product.find({
         name: { $regex: search, $options: 'i' },
       }).distinct('_id');
-      query['products.product_id'] = { $in: productIds };
+
+      // 🔁 Combine with customer name search
+      query.$or = [
+        { 'products.product_id': { $in: productIds } },
+        { customer_name: { $regex: search, $options: 'i' } }
+      ];
     }
+
 
     // ✅ Filter by user
     if (userId) {
@@ -140,7 +151,7 @@ exports.getAllSales = async (req, res) => {
     if (startDate || endDate) {
       query.date_of_sale = {};
       if (startDate) query.date_of_sale.$gte = new Date(startDate);
-      if (endDate) query.date_of_sale.$lte = new Date(endDate);
+      if (endDate) query.date_of_sale.$lte = new Date(endDate); 
     }
 
     const total = await Sale.countDocuments(query);
@@ -439,10 +450,14 @@ exports.updateSale = async (req, res) => {
     sale.updated_at = new Date();
     await sale.save();
 
-    // ✅ Generate invoice
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename=invoice-${sale.sale_id}.pdf`);
-    await generateInvoicePdf(sale, res);
+
+    const invoice_url = `https://berostock.onrender.com/invoice/${sale.sale_id}`;
+    return res.status(201).json({ message: "Sale updated", invoice_url });
+ 
+    // // ✅ Generate invoice
+    // res.setHeader('Content-Type', 'application/pdf');
+    // res.setHeader('Content-Disposition', `attachment; filename=invoice-${sale.sale_id}.pdf`);
+    // await generateInvoicePdf(sale, res);
 
   } catch (error) {
     console.error('❌ Error updating sale:', error.message);
@@ -498,92 +513,68 @@ exports.deleteSale = async (req, res) => {
 
 
 
-const getSummary = async (req, res, title, startDate, endDate) => {
+
+
+exports.getSalesSummary = async (req, res) => {
   try {
-    const sales = await Sale.find({
-      date_of_sale: {
-        $gte: startDate.toDate(),
-        $lte: endDate.toDate()
+    // === DAILY RANGE (UTC) ===
+    const startOfTodayUTC = new Date(Date.UTC(
+      new Date().getUTCFullYear(),
+      new Date().getUTCMonth(),
+      new Date().getUTCDate(),
+      0, 0, 0, 0
+    ));
+
+    const endOfTodayUTC = new Date(Date.UTC(
+      new Date().getUTCFullYear(),
+      new Date().getUTCMonth(),
+      new Date().getUTCDate(),
+      23, 59, 59, 999
+    ));
+
+    // === MONTHLY RANGE (UTC) ===
+    const now = new Date();
+    const startOfMonthUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+    const endOfMonthUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0, 23, 59, 59, 999));
+
+    // === DAILY SALES TOTAL ===
+    const dailySales = await Sale.aggregate([
+      {
+        $match: {
+          date_of_sale: { $gte: startOfTodayUTC, $lte: endOfTodayUTC }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$total_price" }
+        }
       }
-    })
-    .populate('products.product_id')
-    .lean();
+    ]);
 
-    // ✅ Let generateSummaryPDF handle headers and piping
-    await generateSummaryPDF(sales, `${title} Sales Summary`, startDate, endDate, res);
+    // === MONTHLY SALES TOTAL ===
+    const monthlySales = await Sale.aggregate([
+      {
+        $match: {
+          date_of_sale: { $gte: startOfMonthUTC, $lte: endOfMonthUTC }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$total_price" }
+        }
+      }
+    ]);
 
-  } catch (err) {
-    console.error('❌ Error generating summary PDF:', err);
-    if (!res.headersSent) {
-      res.status(500).json({ error: 'Failed to generate summary PDF' });
-    }
+    res.json({
+      dailyTotalSales: dailySales[0]?.total || 0,
+      monthlyTotalSales: monthlySales[0]?.total || 0,
+    });
+  } catch (error) {
+    console.error("Sales summary error:", error);
+    res.status(500).json({ message: 'Failed to generate sales summary.' });
   }
+
 };
 
-exports.getDailySummaryPDF = (req, res) => {
-  const today = moment().startOf('day');
-  const endOfDay = moment().endOf('day');
-  getSummary(req, res, 'Daily', today, endOfDay);
-};
-
-exports.getWeeklySummaryPDF = (req, res) => {
-  const startOfWeek = moment().startOf('isoWeek');
-  const endOfWeek = moment().endOf('isoWeek');
-  getSummary(req, res, 'Weekly', startOfWeek, endOfWeek);
-};
-
-exports.getMonthlySummaryPDF = (req, res) => {
-  const startOfMonth = moment().startOf('month');
-  const endOfMonth = moment().endOf('month');
-  getSummary(req, res, 'Monthly', startOfMonth, endOfMonth);
-};
-
-exports.getYearlySummaryPDF = (req, res) => {
-  const startOfYear = moment().startOf('year');
-  const endOfYear = moment().endOf('year');
-  getSummary(req, res, 'Yearly', startOfYear, endOfYear);
-};
-
-
-
-
-
-  // const getSummary = async (req, res, rangeLabel, startDate, endDate) => {
-  //   try {
-  //     const sales = await Sale.find({
-  //       date_of_sale: {
-  //         $gte: startDate.toDate(),
-  //         $lte: endDate.toDate()
-  //       }
-  //     }).populate('products.product_id');
-
-  //     return generateSummaryPDF(sales, `${rangeLabel} Sales Summary`, startDate, endDate, res);
-  //   } catch (error) {
-  //     console.error(`❌ Failed to generate ${rangeLabel} sales summary:`, error);
-  //     res.status(500).send(`Error generating ${rangeLabel} sales summary`);
-  //   }
-  // };
-
-  // exports.getDailySummaryPDF = (req, res) => {
-  //   const today = moment().startOf('day');
-  //   const endOfDay = moment().endOf('day');
-  //   getSummary(req, res, 'Daily', today, endOfDay);
-  // };
-
-  // exports.getWeeklySummaryPDF = (req, res) => {
-  //   const startOfWeek = moment().startOf('isoWeek');
-  //   const endOfWeek = moment().endOf('isoWeek');
-  //   getSummary(req, res, 'Weekly', startOfWeek, endOfWeek);
-  // };
-
-  // exports.getMonthlySummaryPDF = (req, res) => {
-  //   const startOfMonth = moment().startOf('month');
-  //   const endOfMonth = moment().endOf('month');
-  //   getSummary(req, res, 'Monthly', startOfMonth, endOfMonth);
-  // };
-
-  // exports.getYearlySummaryPDF = (req, res) => {
-  //   const startOfYear = moment().startOf('year');
-  //   const endOfYear = moment().endOf('year');
-  //   getSummary(req, res, 'Yearly', startOfYear, endOfYear);
-  // };

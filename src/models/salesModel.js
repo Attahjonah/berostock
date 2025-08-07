@@ -44,7 +44,7 @@ const saleSchema = new mongoose.Schema({
   mode_of_payment: {
     type: String,
     required: true,
-    enum: ['POS', 'Transfer', 'Cash']
+    enum: ['Card', 'Transfer', 'Cash']
   }
 }, {
   timestamps: { createdAt: 'date_of_sale', updatedAt: 'updated_at' }

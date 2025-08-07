@@ -69,3 +69,14 @@
 [31m[1m2025-05-25 21:21:55 error ERROR: Product validation failed: product_id: Path `product_id` is required., supplier: `Fouani Nig. Ltd` is not a valid enum value for path `supplier`.[22m[39m
 [31m[1m2025-06-25 04:10:33 error Login error: read ECONNRESET[22m[39m
 [31m[1m2025-06-25 13:15:18 error ERROR: Product validation failed: supplier: `Fouani Nig. Ltd` is not a valid enum value for path `supplier`.[22m[39m
+[31m[1m2025-07-10 10:57:40 error ERROR: Product validation failed: supplier: `Fouani` is not a valid enum value for path `supplier`.[22m[39m
+[31m[1m2025-07-10 10:57:56 error ERROR: Product validation failed: supplier: `Fouani` is not a valid enum value for path `supplier`.[22m[39m
+[31m[1m2025-07-10 10:57:58 error ERROR: Product validation failed: supplier: `Fouani` is not a valid enum value for path `supplier`.[22m[39m
+[31m[1m2025-07-10 10:58:46 error ERROR: Product validation failed: supplier: `Fouani` is not a valid enum value for path `supplier`.[22m[39m
+[31m[1m2025-07-10 11:07:12 error ERROR: Product validation failed: supplier: `f` is not a valid enum value for path `supplier`.[22m[39m
+[31m[1m2025-07-10 11:29:17 error ERROR: Product validation failed: supplier: `kkk` is not a valid enum value for path `supplier`.[22m[39m
+[31m[1m2025-07-10 11:48:11 error ERROR: Product validation failed: supplier: `gh` is not a valid enum value for path `supplier`.[22m[39m
+[31m[1m2025-07-30 00:24:59 error Login error: read ECONNRESET[22m[39m
+[31m[1m2025-07-30 00:27:10 error Forgot password error: getaddrinfo ENOTFOUND cluster0-shard-00-00.tq9xo.mongodb.net[22m[39m
+[31m[1m2025-07-30 23:06:39 error Login error: getaddrinfo ENOTFOUND cluster0-shard-00-00.tq9xo.mongodb.net[22m[39m
+[31m[1m2025-08-06 13:36:38 error ERROR: read ECONNRESET[22m[39m

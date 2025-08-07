@@ -65,13 +65,18 @@ exports.getAllProducts = async (req, res) => {
 
     const query = {};
     if (search) {
-      query.name = { $regex: search, $options: 'i' };
-    }
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { supplier: { $regex: search, $options: 'i' } }
+      ];
+}
+
 
     let [products, totalItems] = await Promise.all([
       Product.find(query).sort({ created_at: -1 }).skip(skip).limit(Number(limit)),
       Product.countDocuments(query)
-    ]);
+    ]); 
 
     if (!products.length) {
       return res.status(404).json({ success: false, message: 'No products found' });

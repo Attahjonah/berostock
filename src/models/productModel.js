@@ -53,7 +53,7 @@ const productSchema = new mongoose.Schema({
    supplier: { 
     type: String, 
     required: true,
-    enum: ["Fouani Nig Ltd", "Somotex Nig Ltd", "Guangzhou Machinery China"]
+    enum: ["Fouani", "Somotex", "Guangzhou China"]
         
      },
 }, {

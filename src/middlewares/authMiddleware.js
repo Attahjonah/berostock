@@ -24,9 +24,9 @@ const verifyToken = (req, res, next) => {
     console.log("✅ Verified user:", req.user);
     next();
   } catch (err) {
-    console.error("❌ Invalid token:", err.message);
-    return res.status(400).json({ message: "Token is not valid" });
+    console.error("❌ Invalid or expired token:", err.message);
+    return res.status(401).json({ message: "Session expired. Please log in again." });
   }
-}; 
+};
 
 module.exports = verifyToken;

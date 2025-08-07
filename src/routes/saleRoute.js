@@ -4,7 +4,9 @@ const saleController = require('../controllers/saleController');
 const authMiddleware = require('../middlewares/authMiddleware');
 const authorizeRoles = require('../middlewares/roleMiddleware')
 const { saleRateLimiter } = require('../middlewares/rateLimiter');
-
+//const { getSalesSummary } = require("../controllers/saleController")
+const Sale = require('../models/salesModel');
+const generateInvoicePdf = require('../utils/generateInvoiceUtils');
 
 router.use(authMiddleware);
 router.use(saleRateLimiter); // Apply rate limit to all sale routes
@@ -251,82 +253,6 @@ router.get('/', saleController.getAllSales);
 router.get('/export', saleController.exportSalesToCSV);
 
 
-/**
- * @swagger
- * /api/sales/{id}:
- *   get:
- *     summary: Get sale by ID (Mongo _id or UUID)
- *     tags: [Sales]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - name: id
- *         in: path
- *         description: Sale ID (Mongo _id or sale UUID)
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Sale detail
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
- *                 data:
- *                   type: object
- *                   properties:
- *                     sale_id:
- *                       type: string
- *                     sold_by:
- *                       type: string
- *                     customer_name:
- *                       type: string
- *                     products:
- *                       type: array
- *                       items:
- *                         type: object
- *                         properties:
- *                           product_id:
- *                             type: string
- *                           product_name:
- *                             type: string
- *                           quantity:
- *                             type: integer
- *                           selling_price:
- *                             type: number
- *                             format: float
- *                           cost_price:
- *                             type: number
- *                             format: float
- *                           profit_made:
- *                             type: number
- *                             format: float
- *                     total_price:
- *                       type: number
- *                       format: float
- *                     profit_made:
- *                       type: number
- *                       format: float
- *                     mode_of_payment:
- *                       type: string
- *                     date_of_sale:
- *                       type: string
- *                       format: date
- *                     updated_at:
- *                       type: string
- *                       format: date-time
- *       404:
- *         description: Sale not found
- *       500:
- *         description: Internal server error
- */
-
-router.get('/:id', authorizeRoles("admin", "manager", "staff"), saleController.getSaleById);
 
 
 
@@ -432,86 +358,105 @@ router.put('/:id', saleController.updateSale);
 router.delete('/:id', saleController.deleteSale);
 
 
+router.get('/summary', saleController.getSalesSummary);
+
+
+router.get('/sales/:saleId/invoice', async (req, res) => {
+  try {
+    const sale = await Sale.findOne({ sale_id: req.params.saleId })
+      .populate('products.product_id')
+      .populate('createdBy');
+
+    if (!sale) {
+      return res.status(404).send('Sale not found');
+    }
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename=invoice-${sale.sale_id}.pdf`);
+    await generateInvoicePdf(sale, res);
+  } catch (err) {
+    console.error("❌ Error generating invoice preview:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
 /**
  * @swagger
- * /api/sales/summary/daily:
+ * /api/sales/{id}:
  *   get:
- *     summary: Get daily sales summary
+ *     summary: Get sale by ID (Mongo _id or UUID)
  *     tags: [Sales]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Sale ID (Mongo _id or sale UUID)
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Daily sales summary PDF
+ *         description: Sale detail
  *         content:
- *           application/pdf:
+ *           application/json:
  *             schema:
- *               type: string
- *               format: binary
- *       403:
- *         description: Forbidden - Admin/Manager only
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     sale_id:
+ *                       type: string
+ *                     sold_by:
+ *                       type: string
+ *                     customer_name:
+ *                       type: string
+ *                     products:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           product_id:
+ *                             type: string
+ *                           product_name:
+ *                             type: string
+ *                           quantity:
+ *                             type: integer
+ *                           selling_price:
+ *                             type: number
+ *                             format: float
+ *                           cost_price:
+ *                             type: number
+ *                             format: float
+ *                           profit_made:
+ *                             type: number
+ *                             format: float
+ *                     total_price:
+ *                       type: number
+ *                       format: float
+ *                     profit_made:
+ *                       type: number
+ *                       format: float
+ *                     mode_of_payment:
+ *                       type: string
+ *                     date_of_sale:
+ *                       type: string
+ *                       format: date
+ *                     updated_at:
+ *                       type: string
+ *                       format: date-time
+ *       404:
+ *         description: Sale not found
  *       500:
- *         description: Server error
+ *         description: Internal server error
  */
-router.get('/summary/daily', authorizeRoles('admin', 'manager'), saleController.getDailySummaryPDF);
 
-/**
- * @swagger
- * /api/sales/summary/weekly:
- *   get:
- *     summary: Get weekly sales summary
- *     tags: [Sales]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Weekly sales summary PDF
- *         content:
- *           application/pdf:
- *             schema:
- *               type: string
- *               format: binary
- */
-router.get('/summary/weekly', authorizeRoles('admin', 'manager'), saleController.getWeeklySummaryPDF);
-
-/**
- * @swagger
- * /api/sales/summary/monthly:
- *   get:
- *     summary: Get monthly sales summary
- *     tags: [Sales]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Monthly sales summary PDF
- *         content:
- *           application/pdf:
- *             schema:
- *               type: string
- *               format: binary
- */
-router.get('/summary/monthly', authorizeRoles('admin', 'manager'), saleController.getMonthlySummaryPDF);
-
-/**
- * @swagger
- * /api/sales/summary/yearly:
- *   get:
- *     summary: Get yearly sales summary
- *     tags: [Sales]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Yearly sales summary PDF
- *         content:
- *           application/pdf:
- *             schema:
- *               type: string
- *               format: binary
- */
-router.get('/summary/yearly', authorizeRoles('admin', 'manager'), saleController.getYearlySummaryPDF);
-
+router.get('/:id', authorizeRoles("admin", "manager", "staff"), saleController.getSaleById);
 
 
 module.exports = router;

@@ -1,9 +1,12 @@
+// generateInvoiceUtil.js
+
 const PDFDocument = require('pdfkit');
 const QRCode = require('qrcode');
 const axios = require('axios');
 const writtenNumber = require('written-number');
-writtenNumber.defaults.lang = 'en';
 const moment = require('moment');
+
+writtenNumber.defaults.lang = 'en';
 
 const Product = require('../models/productModel');
 const Sale = require('../models/salesModel');
@@ -30,7 +33,7 @@ module.exports = async function generateInvoicePdf(sale, res) {
 
   await sale.populate('products.product_id');
 
-  // Logo
+  // Add logo
   try {
     const logo = await axios.get(COMPANY.logoUrl, { responseType: 'arraybuffer' });
     doc.image(logo.data, 50, 40, { width: 80 });
@@ -38,7 +41,7 @@ module.exports = async function generateInvoicePdf(sale, res) {
     console.warn('⚠️ Failed to load logo:', e.message);
   }
 
-  // Company Info
+  // Company details
   doc
     .fontSize(14).text(COMPANY.name, 150, 40)
     .fontSize(10).text(COMPANY.address, 150, 60)
@@ -52,7 +55,7 @@ module.exports = async function generateInvoicePdf(sale, res) {
     .text(`Mode of Payment: ${sale.mode_of_payment}`, 50, yStart + 40)
     .text(`Customer: ${sale.customer_name}`, 50, yStart + 60);
 
-  // Table headers
+  // Table header
   const tableTop = yStart + 100;
   const rowHeight = 25;
   let y = tableTop;
@@ -68,7 +71,6 @@ module.exports = async function generateInvoicePdf(sale, res) {
 
   y += rowHeight;
 
-  // Table rows
   doc.font('Helvetica').fontSize(9);
   for (const item of sale.products) {
     const prod = item.product_id;
@@ -84,7 +86,7 @@ module.exports = async function generateInvoicePdf(sale, res) {
     y += rowHeight;
   }
 
-  // Total & amount in words
+  // Total
   y += 10;
   doc.font('Helvetica-Bold')
     .text('TOTAL:', 360, y)
@@ -100,13 +102,11 @@ module.exports = async function generateInvoicePdf(sale, res) {
 
   // QR Code
   const qrY = y + 40;
-  //const invoiceUrl = `https://localhost:2025.com/invoice/${sale.sale_id}`;
   const invoiceUrl = `https://berostock.onrender.com/invoice/${sale.sale_id}`;
   const qrBuffer = await QRCode.toBuffer(invoiceUrl);
-
   doc.image(qrBuffer, 50, qrY, { width: 80 });
 
-  // Note section (below QR)
+  // Note
   y = qrY + 90;
   doc
     .font('Helvetica-Oblique')
@@ -129,3 +129,5 @@ module.exports = async function generateInvoicePdf(sale, res) {
 
   doc.end();
 };
+
+
