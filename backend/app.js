@@ -28,7 +28,7 @@ const { swaggerServe, swaggerSetup, specs } = require("./src/config/swagger");
 // LOGGING & BASIC SECURITY
 app.use(morgan("dev"));
 app.use(cors({
-  origin: ["http://localhost:3000", "https://berostock.netlify.app/"],
+  origin: ["http://localhost:3000", "https://berostock.netlify.app"],
   credentials: true
 }));
 app.use(helmet());
