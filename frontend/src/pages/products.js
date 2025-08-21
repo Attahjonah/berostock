@@ -29,7 +29,7 @@ const Products = () => {
     try {
       const res = await API.get(`/products?page=${currentPage}&search=${searchTerm}`);
       setProducts(res.data.data);
-      setTotalPages(res.data.totalPages || 1);
+      setTotalPages(res.data.pagination?.totalPages || 1);
     } catch (err) {
       setError("Failed to load products.");
     } finally {
@@ -48,7 +48,7 @@ const Products = () => {
       }
     }
     fetchProducts();
-  }, [fetchProducts]); // ✅ No warning now
+  }, [currentPage, searchTerm, fetchProducts]); // ✅ No warning now
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
